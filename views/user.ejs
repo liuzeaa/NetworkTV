@@ -1,0 +1,171 @@
+<%- include('./common/header') -%>
+    <div class="container" style="margin-top: 100px;">
+        <div clas="row">
+            <div class="col-md-12">
+                <div style="position:absolute;right:20px;top:-70px;z-index: 1000">
+                    <a href="javsacript:;" id="nicheng"></a>
+                    <a href="javsacript:;" id="logout">退出</a>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading clearfix">
+                        <h2 class="panel-title pull-left" style="line-height: 34px;">用户列表</h2>
+                        <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#createModal">增加用户</button>
+                        <button class="btn btn-primary pull-right" data-toggle="modal" style="margin-right:10px;">导入用户</button>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table-hover table-bordered table">
+                           <thead>
+                               <tr>
+                                   <th>昵称</th>
+                                   <th>用户名</th>
+                                   <th>操作</th>
+                               </tr>
+                           </thead>
+                            <tbody id="list">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<%- include('./common/footer') -%>
+<!-- Modal -->
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">新增用户</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="nickName">昵称</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="nickName">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="save">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">修改密码</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="password">密码</label>
+                        <div class="col-md-6">
+                            <input type="password" class="form-control" id="password">
+                        </div>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="savePwd">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/javascripts/jquery.tmpl.js"></script>
+<script src="/javascripts/laypage/laypage.js"></script>
+<script id="item" type="text/x-jquery-tmpl">
+    <tr>
+        <td>${nickName}</td>
+        <td>${name}</td>
+        <td>
+            <button type="button" class="btn-primary btn" onclick="edit('${_id}')">修改密码</button>
+            <button type="button" class="btn btn-danger" onclick="remove('${_id}')">删除</button>
+        </td>
+    </tr>
+</script>
+<script type="text/javascript">
+    $(function(){
+        getList();
+    })
+    function getList(){
+        $.ajax({
+            url:host+'/user/list',
+            type:'POST',
+            dataType:'json',
+            xhrFields: {
+                withCredentials: true
+            },
+            data:{
+
+            },
+            success:function(result){
+                $("#list").empty();
+                $("#item").tmpl(result).appendTo("#list");
+            }
+        })
+    }
+   $('#save').click(function(){
+       $.ajax({
+           url:host+'/user/create',
+           type:'POST',
+           dataType:'json',
+           xhrFields: {
+               withCredentials: true
+           },
+           data:{
+                nickName:$('#nickName').val().trim()
+           },
+           success:function(result){
+               getList();
+               $('#createModal').modal('hide')
+           }
+       })
+   })
+    function edit(id){
+        $('#editModal').modal('show');
+        $('#savePwd').click(function(){
+            $.ajax({
+                url:host+'/user/edit/'+id,
+                type:'POST',
+                dataType:'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                data:{
+                    password:$('#password').val().trim()
+                },
+                success:function(result){
+                    console.log(result)
+                    getList();
+                    $('#editModal').modal('hide')
+                }
+            })
+        })
+    }
+    function remove(id){
+        $.ajax({
+            url:host+'/user/delete/'+id,
+            type:'POST',
+            dataType:'json',
+            xhrFields: {
+                withCredentials: true
+            },
+            success:function(result){
+                debugger;
+                console.log(result)
+                getList();
+
+            }
+        })
+    }
+</script>
