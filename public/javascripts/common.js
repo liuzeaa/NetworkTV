@@ -1,5 +1,5 @@
 var host = 'http://localhost:3000';
-
+var socket = io.connect();
 $(function(){
     checkLogin();
     $('#logout').click(function(){

@@ -1,21 +1,40 @@
-<%- include('./common/header') -%>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <link href="/stylesheets/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/stylesheets/login.css">
     <style>
-    .Validform_checktip {
-        display: block;
-        line-height: 25px;
-        font-size: 15px;
-        color: #fff;
-        text-indent: 45px;
-    }
-    .Validform_wrong {
-        color: red;
-    }
+        .Validform_checktip {
+            display: block;
+            line-height: 25px;
+            font-size: 15px;
+            color: #fff;
+            text-indent: 45px;
+        }
+        .Validform_wrong {
+            color: red;
+        }
 
-    .Validform_right {
-        color: #91c954;
-    }
-</style>
-    <div class="login_bg">
+        .Validform_right {
+            color: #91c954;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="container clearfix">
+        <div class="logo pull-left">
+            <img src="/images/logo.png" />
+        </div>
+    </div>
+</div>
+<div class="login_bg">
     <div class="container container1">
         <div style="position:absolute;left:0;top:50%;margin-top:-135px;">
             <img src="/images/bg.png"/>
@@ -59,12 +78,17 @@
         </div>
     </div>
 </div>
-<%- include('./common/footer') -%>
+<script src="/javascripts/jquery.min.js"></script>
+<script src="/javascripts/bootstrap.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/javascripts/common.js"></script>
 <script src="/javascripts/Validform_v5.3.1.js"></script>
 <script>
-
-   $("#LoginForm").Validform({
-       datatype: {},
+    socket.on('login',function (data) {
+        
+    })
+    $("#LoginForm").Validform({
+        datatype: {},
         ajaxPost: true,
         btnSubmit: "#LoginButton",
         tiptype: 3,
@@ -100,3 +124,5 @@
         }
     });
 </script>
+</body>
+</html>
