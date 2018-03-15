@@ -10,33 +10,35 @@ router.post('/login',function(req,res,next){
     console.log(userName);
     var md5 = crypto.createHash("md5");
     var newPas = md5.update(userPwd).digest("hex");
-    User.findOne({name:userName,password:newPas,isDelected:false},function(err,doc){
-        if(err){
+    User.findOne({name:userName,password:newPas,isDelected:false},function(err,doc) {
+        if (err) {
             res.send(err.message);
             return
         }
-        res.cookie('isAdmin',doc.isAdmin,{
-            path:'/',
-            maxAge:1000*60*60
-        })
-        res.cookie('userId',doc._id,{
-            path:'/',
-            maxAge:1000*60*60
-        })
-        res.cookie("userName",doc.name,{
-            path:'/',
-            maxAge:1000*60*60
-        });
-        res.cookie("nickName",doc.nickName,{
-            path:'/',
-            maxAge:1000*60*60
-        });
-        res.send({
-            isAdmin:doc.isAdmin,
-            userId:doc._id,
-            userName:doc.name,
-            nickName:doc.nickName
-        });
+        if (doc != null){
+            res.cookie('isAdmin', doc.isAdmin, {
+                path: '/',
+                maxAge: 1000 * 60 * 60
+            })
+                res.cookie('userId', doc._id, {
+                    path: '/',
+                    maxAge: 1000 * 60 * 60
+                })
+                res.cookie("userName", doc.name, {
+                    path: '/',
+                    maxAge: 1000 * 60 * 60
+                });
+                res.cookie("nickName", doc.nickName, {
+                    path: '/',
+                    maxAge: 1000 * 60 * 60
+                });
+                res.send({
+                    isAdmin: doc.isAdmin,
+                    userId: doc._id,
+                    userName: doc.name,
+                    nickName: doc.nickName
+                });
+            }
     })
 })
 //退出

@@ -1,7 +1,7 @@
 var host = 'http://localhost:3000';
 var socket = io.connect();
 $(function(){
-    checkLogin();
+    //checkLogin();
     $('#logout').click(function(){
         $.ajax({
             url:host+'/user/logout',
@@ -37,7 +37,7 @@ function checkLogin(){
             }else{
                 $('#nicheng').html(result.result.nickName)
 
-                if(!result.result.isAdmin){
+                if(result.result.isAdmin=='true'){
                     if(location.href==host+'/user'){
                         return;
                     }

@@ -92,15 +92,6 @@ io.on('connection', function(socket) {
     socket.on('message', function(obj) {
         io.emit('message', obj);
         console.log(obj.username + '说：' + obj.content);
-    })
-
-    // 服务器时间同步
-    function tick(){
-        var now = new Date().toUTCString();
-        console.log(now);
-        io.emit('time', now);
-    }
-
-    setInterval(tick, 1000);
+    });
 })
 server.listen(3000);

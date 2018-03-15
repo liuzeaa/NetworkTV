@@ -85,7 +85,7 @@
 <script src="/javascripts/Validform_v5.3.1.js"></script>
 <script>
     socket.on('login',function (data) {
-        
+        console.log(data)
     })
     $("#LoginForm").Validform({
         datatype: {},
@@ -106,16 +106,16 @@
                     password:$('#password').val().trim()
                 },
                 success:function(result){
-                    /*socket.emit('login',{
+                    socket.emit('login',{
                         userid:result.userId,
                         username:result.userName,
                         nickname:result.nickName
-                    })*/
-                    if(result.isAdmin){
+                    })
+                    /*if(result.isAdmin){
                         location.href='/user'
                     }else{
                         location.href='/index'
-                    }
+                    }*/
                 },
                 error:function(){
 
