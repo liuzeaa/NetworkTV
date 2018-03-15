@@ -1,4 +1,4 @@
-<%- include('./common/header') -%>
+<%- include('./common/header.html') -%>
     <div class="container" style="margin-top: 100px;">
         <div clas="row">
             <div class="col-md-12">
@@ -27,7 +27,7 @@
             </div>
         </div>
     </div>
-<%- include('./common/footer') -%>
+<%- include('./common/footer.html') -%>
 <!-- Modal -->
 <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -142,7 +142,6 @@
                     password:$('#password').val().trim()
                 },
                 success:function(result){
-                    console.log(result)
                     getList();
                     $('#editModal').modal('hide')
                 }
@@ -158,10 +157,7 @@
                 withCredentials: true
             },
             success:function(result){
-                debugger;
-                console.log(result)
                 getList();
-
             }
         })
     }

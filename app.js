@@ -22,36 +22,35 @@ app.all('*', (req, res, next) => {
 });
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.engine('.html',require('ejs').__express)
+app.set('view engine', 'html');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-/*app.get('/', function(req, res, next) {
+app.get('/', function(req, res, next) {
     res.render('login',{title:'登录',isLogin:false});
-});*/
+});
 app.get('/index', function(req, res, next) {
     res.render('index',{title:'在线直播',isLogin:true});
 });
 app.get('/user', function(req, res, next) {
     res.render('user',{title:'用户管理',isLogin:true});
 });
-app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/login.html');
-});
+
 app.use('/user', user);
 app.use('/comment', comment);
 
+server.listen(3000);
 // 在线用户
 var onlineUsers = {};
 // 当前在线人数
 var onlineCount = 0;
 
 io.on('connection', function(socket) {
-    console.log('新用户已上线！')
     socket.on('login', function(obj) {
-        // 将新加入用户的唯一标识当作socket的名称
+        // 将新加入用户的唯一标识当作socket的名称 obj userid,username,nickName
         socket.name = obj.userid;
         if (!onlineUsers.hasOwnProperty(obj.userid)) {
             onlineUsers[obj.userid] = obj.username;
@@ -90,8 +89,28 @@ io.on('connection', function(socket) {
     })
     // 监听用户发布聊天内容
     socket.on('message', function(obj) {
-        io.emit('message', obj);
-        console.log(obj.username + '说：' + obj.content);
+        //obj userId content
+        Comment.create(obj,function(err,data){
+            if(err){
+                console.log(err);
+                return;
+            }
+            if(data!==null){
+                User.findOne({
+                    _id:obj.userId,
+                    isDelected:false
+                },function(err,doc){
+                    if(err){
+                        console.log(err);
+                        return;
+                    }
+                    io.emit('message', {
+                        nickName:doc.nickName,
+                        content:obj.content
+                    });
+                })
+            }
+        })
+
     });
 })
-server.listen(3000);

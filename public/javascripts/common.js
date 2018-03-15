@@ -1,8 +1,18 @@
 var host = 'http://localhost:3000';
 var socket = io.connect();
+socket.on('login',function(data){
+    console.log(data)
+})
 $(function(){
-    //checkLogin();
+    var nickName = $.cookie('nickName')
+    if(nickName!=null){
+        $('#nicheng').html(nickName);
+    }
+    checkLogin();
     $('#logout').click(function(){
+        socket.on('logout',function(data){
+            console.log(data)
+        })
         $.ajax({
             url:host+'/user/logout',
             type:'POST',
@@ -35,7 +45,7 @@ function checkLogin(){
                 }
                location.href='/'
             }else{
-                $('#nicheng').html(result.result.nickName)
+
 
                 if(result.result.isAdmin=='true'){
                     if(location.href==host+'/user'){

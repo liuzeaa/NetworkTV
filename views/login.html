@@ -1,4 +1,4 @@
-<%- include('./common/header') -%>
+<%- include('./common/header.html') -%>
     <style>
     .Validform_checktip {
         display: block;
@@ -59,7 +59,7 @@
         </div>
     </div>
 </div>
-<%- include('./common/footer') -%>
+<%- include('./common/footer.html') -%>
 <script src="/javascripts/Validform_v5.3.1.js"></script>
 <script>
 
@@ -82,11 +82,11 @@
                     password:$('#password').val().trim()
                 },
                 success:function(result){
-                    /*socket.emit('login',{
+                    socket.emit('login',{
                         userid:result.userId,
                         username:result.userName,
                         nickname:result.nickName
-                    })*/
+                    })
                     if(result.isAdmin){
                         location.href='/user'
                     }else{
