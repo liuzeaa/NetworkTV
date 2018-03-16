@@ -166,6 +166,44 @@
 <script type="text/javascript">
     $(function(){
         getList();
+        $('#create_form').bootstrapValidator({
+            fields:{
+                nickName:{
+                    validators: {
+                        notEmpty: {//非空验证：提示消息
+                            message: '昵称不能为空'
+                        }
+                    }
+                },
+                pwd:{
+                    validators: {
+                        notEmpty: {
+                            message: '密码不能为空'
+                        }
+                    }
+                }
+            }
+        }).on('success.form.bv', function(e) {//点击提交之后
+            e.preventDefault();
+            var $form = $(e.target);
+            var bv = $form.data('bootstrapValidator');
+            $.ajax({
+                url:host+'/user/create',
+                type:'POST',
+                dataType:'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                data:{
+                    nickName:$('#nickName').val().trim(),
+                    password:$('#pwd').val().trim()
+                },
+                success:function(result){
+                    getList();
+                    $('#createModal').modal('hide')
+                }
+            })
+        });
     })
     function getList(){
         $.ajax({
@@ -183,45 +221,6 @@
             }
         })
     }
-    $('#create_form').bootstrapValidator({
-        fields:{
-            nickName:{
-                validators: {
-                    notEmpty: {//非空验证：提示消息
-                        message: '昵称不能为空'
-                    }
-                }
-            },
-            pwd:{
-                validators: {
-                    notEmpty: {
-                        message: '密码不能为空'
-                    }
-                }
-            }
-        }
-    }).on('success.form.bv', function(e) {//点击提交之后
-        e.preventDefault();
-        var $form = $(e.target);
-        var bv = $form.data('bootstrapValidator');
-        $.ajax({
-            url:host+'/user/create',
-            type:'POST',
-            dataType:'json',
-            xhrFields: {
-                withCredentials: true
-            },
-            data:{
-                nickName:$('#nickName').val().trim(),
-                password:$('#pwd').val().trim()
-            },
-            success:function(result){
-                getList();
-                $('#createModal').modal('hide')
-            }
-        })
-    });
-
     function edit(id){
         $('#editModal').modal('show');
         $('#edit_form').bootstrapValidator({

@@ -107,8 +107,29 @@
     </li>
 </script>
 <script>
-
-   getList();
+    $(function(){
+        getList();
+        var userId = $.cookie('userId');
+        var userid = userId.slice(3,userId.length-1);
+        $('#submit').click(function(){
+            if(userId==null){
+                return
+            }
+            if($('#content').val().trim()==null){
+                alert('请输入内容');
+                return
+            }
+            socket.emit('message',{
+                userId:userid,
+                content:$('#content').val().trim()
+            })
+            socket.on('message',function(data){
+                $('#chat_item1').tmpl(data).appendTo('#chat_list');
+                scrollIntoView('#chat_list');
+                $('#content').val('');
+            })
+        })
+    })
    function getList(){
         $.ajax({
             url:host+'/comment/list',
@@ -126,28 +147,7 @@
        var objd = $obj[0]; //转化为dom对象
        objd.scrollIntoView();
    }
-   var userId = $.cookie('userId');
-   var userid = userId.slice(3,userId.length-1);
-   $('#submit').click(function(){
-       if(userId==null){
-           return
-       }
-       if($('#content').val().trim()==null){
-           alert('请输入内容');
-           return
-       }
 
-       socket.emit('message',{
-           userId:userid,
-           content:$('#content').val().trim()
-       })
-       socket.on('message',function(data){
-           $('#chat_item1').tmpl(data).appendTo('#chat_list');
-           scrollIntoView('#chat_list');
-           $('#content').val('');
-       })
-
-   })
 </script>
 </body>
 </html>
