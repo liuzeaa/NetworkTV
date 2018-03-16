@@ -72,7 +72,7 @@
 </section>
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
-<script src="/js/jquery.cookie.min.js"></script>
+<script src="/js/js.cookie.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/qrcode.min.js"></script>
 <script src="/js/common.js"></script>
@@ -109,8 +109,13 @@
 </script>
 <script>
     $(function(){
+        var qrcode = new QRCode(document.getElementById("code"), {
+            width: 120,
+            height: 120
+        });
+        qrcode.makeCode(host+'/m/login');
         getList();
-        var userId = $.cookie('userId');
+        var userId = Cookies.get('userId');
         var userid = userId.slice(3,userId.length-1);
         $('#submit').click(function(){
             if(userId==null){
@@ -125,6 +130,7 @@
                 content:$('#content').val().trim()
             })
             socket.on('message',function(data){
+
                 $('#chat_item1').tmpl(data).appendTo('#chat_list');
                 scrollIntoView('#chat_list');
                 $('#content').val('');
@@ -136,9 +142,15 @@
             url:host+'/comment/list',
             type:'POST',
             dataType:'json',
+            xhrFields: {
+                withCredentials: true
+            },
             success:function(res){
-                $('#chat_item').tmpl(res).appendTo('#chat_list');
-                scrollIntoView('#chat_list')
+                if(res.length>0){
+                    $('#chat_item').tmpl(res).appendTo('#chat_list');
+                    scrollIntoView('#chat_list')
+                }
+
             }
         })
    }

@@ -4,15 +4,6 @@
 .pr{
     position: relative;
 }
-.clearfix:after{
-    clear: both;
-}
-.pull-left{
-    float: left;
-}
-.pull-right{
-    float: left;
-}
 /*flex最外框*/
 .page{
     height:100%;
@@ -25,7 +16,7 @@
 /*flex底部，按钮平均分布*/
 .footer{ background: #f1f7ff;flex: 0 0 35px;padding:15px;display: flex;border-top:1px solid #ccc;}
 .input_control{
-    flex:3;height: 35px;background: #fff;color:#333;font-size:14px;padding:0px 10px;border-radius:15px;border: 1px solid #ccc;outline: none;
+    flex:3;min-height: 35px;background: #fff;color:#333;font-size:14px;padding:5px 10px;border-radius:15px;border: 1px solid #ccc;outline: none;line-height: 25px;
 }
 .btn{
     flex:1;margin-left: 15px;border:none;background: #377cd3;border-radius:15px;font-size:14px;
@@ -54,10 +45,11 @@
     padding-left:50px ;
 }
 .ren{
-    font-size: 14px;color:#333333
+    font-size: 14px;color:#333333;
+    float: left;
 }
 .time{
-    font-size: 14px;color:#999
+    font-size: 14px;color:#999;float: right;
 }
 .desc{
     font-size:14px;color:#666;line-height: 25px;margin-top:8px;

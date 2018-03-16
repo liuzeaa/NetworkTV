@@ -20,7 +20,7 @@ $(function(){
                     socket.on('login',function(data){
                         console.log(data)
                     })
-                    location.href = '/'
+                    location.href = '/m/login'
                 }
             }
         })
@@ -37,21 +37,19 @@ function checkLogin(){
         data:{},
         success:function(result){
             if(result.status=='2'){
-                if(location.href==host+'/'){
+                if(location.href==host+'/m/login'){
                     return;
                 }
-                location.href='/'
+                location.href='/m/login'
             }else{
                 if(result.result.isAdmin=='true'){
-                    if(location.href==host+'/user'){
-                        return;
-                    }
-                    location.href='/user'
+                    alert('管理员请使用pc端进行添加用户！');
+                    return;
                 }else{
-                    if(location.href==host+'/video'){
+                    if(location.href==host+'/m/video'){
                         return;
                     }
-                    location.href='/video'
+                    location.href='/m/video'
                 }
             }
         }

@@ -18,104 +18,93 @@
                         <i class="iconfont icon-taolun"></i>
                         讨论版块
                     </span>
+                <div style="float:right">
+                    <span id="nicheng"></span>
+                    <b>|</b>
+                    <span id="logout">退出登录</span>
+                </div>
             </div>
-            <ul class="chat_list">
-                <li>
-                    <i class="iconfont icon-yonghu"></i>
-                    <div class="desc_wrap">
-                        <div class="clearfix">
-                            <span class="ren pull-left">张世果</span>
-                            <span class="time pull-right">2018.02.12</span>
-                        </div>
-                        <div class="desc">
-                            通过基于团队的学生上台讲演和课程讨论这种体验式教学方式加深对所学线性与非线性不同数据结构工作原理的理解
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <i class="iconfont icon-yonghu"></i>
-                    <div class="desc_wrap">
-                        <div class="clearfix">
-                            <span class="ren pull-left">张世果</span>
-                            <span class="time pull-right">2018.02.12</span>
-                        </div>
-                        <div class="desc">
-                            通过基于团队的学生上台讲演和课程讨论这种体验式教学方式加深对所学线性与非线性不同数据结构工作原理的理解
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <i class="iconfont icon-yonghu"></i>
-                    <div class="desc_wrap">
-                        <div class="clearfix">
-                            <span class="ren pull-left">张世果</span>
-                            <span class="time pull-right">2018.02.12</span>
-                        </div>
-                        <div class="desc">
-                            通过基于团队的学生上台讲演和课程讨论这种体验式教学方式加深对所学线性与非线性不同数据结构工作原理的理解
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <i class="iconfont icon-yonghu"></i>
-                    <div class="desc_wrap">
-                        <div class="clearfix">
-                            <span class="ren pull-left">张世果</span>
-                            <span class="time pull-right">2018.02.12</span>
-                        </div>
-                        <div class="desc">
-                            通过基于团队的学生上台讲演和课程讨论这种体验式教学方式加深对所学线性与非线性不同数据结构工作原理的理解
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <i class="iconfont icon-yonghu"></i>
-                    <div class="desc_wrap">
-                        <div class="clearfix">
-                            <span class="ren pull-left">张世果</span>
-                            <span class="time pull-right">2018.02.12</span>
-                        </div>
-                        <div class="desc">
-                            通过基于团队的学生上台讲演和课程讨论这种体验式教学方式加深对所学线性与非线性不同数据结构工作原理的理解
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <i class="iconfont icon-yonghu"></i>
-                    <div class="desc_wrap">
-                        <div class="clearfix">
-                            <span class="ren pull-left">张世果</span>
-                            <span class="time pull-right">2018.02.12</span>
-                        </div>
-                        <div class="desc">
-                            通过基于团队的学生上台讲演和课程讨论这种体验式教学方式加深对所学线性与非线性不同数据结构工作原理的理解
-                        </div>
-                    </div>
-                </li>
-                <li class="li1">
-                    <i class="iconfont icon-yonghu"></i>
-                    <div class="desc_wrap">
-                        <div class="clearfix">
-                            <span class="ren pull-left">张世果</span>
-                            <span class="time pull-right">2018.02.12</span>
-                        </div>
-                        <div class="desc">
-                            通过基于团队的学生上台讲演和课程讨论这种体验式教学方式加深对所学线性与非线性不同数据结构工作原理的理解
-                        </div>
-                    </div>
-                </li>
+            <ul class="chat_list" id="chat_list">
 
             </ul>
         </div>
     </section>
     <footer class="footer">
-        <input class="input_control" type="text" placeholder="一起来分享学习心得吧！"/>
-        <button class="btn">发起评论</button>
+        <textarea class="input_control" type="text" placeholder="一起来分享学习心得吧！" id="content"></textarea>
+        <button class="btn" id="submit">发起评论</button>
     </footer>
 </section>
 <script src="/js/zepto.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/moment.min.js"></script>
+<script src="/js/wapCommon.js"></script>
+<script src="/js/js.cookie.min.js"></script>
 <script>
-    $('.li1').get(0).scrollIntoView();
+    $(function(){
+        getList();
+        var userId = Cookies.get('userId');
+        var userid = userId.slice(3,userId.length-1);
+        $('#submit').on('tap',function(){
+            if(userId==null){
+                return
+            }
+            if($('#content').val().trim()==null){
+                alert('请输入内容');
+                return
+            }
+            socket.emit('message',{
+                userId:userid,
+                content:$('#content').val().trim()
+            })
+            socket.on('message',function(data){
+                $('#chat_list').append('<li>\n' +
+                    '                    <i class="iconfont icon-yonghu"></i>\n' +
+                    '                    <div class="desc_wrap">\n' +
+                    '                        <div style="overflow: hidden">\n' +
+                    '                            <span class="ren">'+data.nickName+'</span>\n' +
+                    '                            <span class="time">'+moment(data.createdAt).format('YYYY-MM-DD HH:mm:ss')+'</span>\n' +
+                    '                        </div>\n' +
+                    '                        <div class="desc">'+data.content+'</div>\n' +
+                    '                    </div>\n' +
+                    '                </li>');
+                scrollIntoView('#chat_list');
+                $('#content').val('');
+            })
+        })
+    })
+    function getList(){
+        $.ajax({
+            url:host+'/comment/list',
+            type:'POST',
+            dataType:'json',
+            xhrFields: {
+                withCredentials: true
+            },
+            success:function(res){
+                if(res.length>0){
+                    res.forEach(function(item){
+                        $('#chat_list').append('<li>\n' +
+                            '                    <i class="iconfont icon-yonghu"></i>\n' +
+                            '                    <div class="desc_wrap">\n' +
+                            '                        <div style="overflow: hidden">\n' +
+                            '                            <span class="ren">'+item.userId.nickName+'</span>\n' +
+                            '                            <span class="time">'+moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss')+'</span>\n' +
+                            '                        </div>\n' +
+                            '                        <div class="desc">'+item.content+'</div>\n' +
+                            '                    </div>\n' +
+                            '                </li>');
+                    })
+                    scrollIntoView('#chat_list')
+                }
+            }
+        })
+    }
+    //定位最后一条讨论内容
+    function scrollIntoView(obj) {
+        var $obj = $(obj).children().last(); //找到要定位的讨论内容
+        var objd = $obj[0]; //转化为dom对象
+        objd.scrollIntoView();
+    }
 </script>
 </body>
 </html>
