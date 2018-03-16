@@ -10,7 +10,7 @@ $(function(){
     }
     checkLogin();
     $('#logout').click(function(){
-        socket.on('logout',function(data){
+        socket.on('login',function(data){
             console.log(data)
         })
         $.ajax({
@@ -45,8 +45,6 @@ function checkLogin(){
                 }
                location.href='/'
             }else{
-
-
                 if(result.result.isAdmin=='true'){
                     if(location.href==host+'/user'){
                         return;

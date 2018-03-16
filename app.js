@@ -79,7 +79,7 @@ io.on('connection', function(socket) {
             // 删除
             delete onlineUsers[socket.name]
             onlineCount--;
-            io.emit('logout', {
+            io.emit('login', {
                 onlineUsers: onlineUsers,
                 onlineCount: onlineCount,
                 user: obj
