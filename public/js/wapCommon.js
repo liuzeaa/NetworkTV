@@ -1,5 +1,5 @@
 const host = 'http://localhost:3000';
-//var socket = io.connect();
+var socket = io.connect();
 $(function(){
     var nickName = Cookies.get('nickName')
     if(nickName!=null){
