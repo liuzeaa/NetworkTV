@@ -1,10 +1,13 @@
 const host = 'http://localhost:3000';
-var socket = io.connect();
+//var socket = io.connect();
 $(function(){
     var nickName = Cookies.get('nickName')
     if(nickName!=null){
         $('#nicheng').html(nickName);
     }
+    socket.on('login',function(data){
+        console.log(data)
+    })
     checkLogin();
     $('#logout').click(function(){
         $.ajax({
@@ -17,9 +20,7 @@ $(function(){
             data:{},
             success:function(result) {
                 if (result.status == 0){
-                    socket.on('login',function(data){
-                        console.log(data)
-                    })
+                    socket.disconnect();
                     location.href = '/m/login'
                 }
             }

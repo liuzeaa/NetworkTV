@@ -5,6 +5,9 @@ $(function(){
     if(nickName!=null){
         $('#nicheng').html(nickName);
     }
+    socket.on('login',function(data){
+        console.log(data)
+    })
     checkLogin();
     $('#logout').click(function(){
         $.ajax({
@@ -17,9 +20,7 @@ $(function(){
             data:{},
             success:function(result) {
                 if (result.status == 0){
-                    socket.on('login',function(data){
-                        console.log(data)
-                    })
+                    socket.disconnect();
                     location.href = '/'
                 }
             }

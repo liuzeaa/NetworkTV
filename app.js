@@ -115,7 +115,7 @@ io.on('connection', function(socket) {
                         io.emit('message', {
                             nickName:doc.nickName,
                             content:obj.content,
-                            createdAt:doc.createdAt
+                            createdAt:new Date()
                         });
                     }
                 })

@@ -108,6 +108,12 @@
 </script>
 <script>
     $(function(){
+        socket.on('message',function(data){
+            console.log(data)
+            $('#chat_item1').tmpl(data).appendTo('#chat_list');
+            scrollIntoView('#chat_list');
+            $('#content').val('');
+        })
         var qrcode = new QRCode(document.getElementById("code"), {
             width: 120,
             height: 120
@@ -124,16 +130,12 @@
                 alert('请输入内容');
                 return
             }
+
             socket.emit('message',{
                 userId:userid,
                 content:$('#content').val().trim()
             })
-            socket.on('message',function(data){
 
-                $('#chat_item1').tmpl(data).appendTo('#chat_list');
-                scrollIntoView('#chat_list');
-                $('#content').val('');
-            })
         })
     })
    function getList(){

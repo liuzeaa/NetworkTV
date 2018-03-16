@@ -41,10 +41,24 @@
 <script src="/js/js.cookie.min.js"></script>
 <script>
     $(function(){
+        socket.on('message',function(data){
+            $('#chat_list').append('<li>\n' +
+                '                    <i class="iconfont icon-yonghu"></i>\n' +
+                '                    <div class="desc_wrap">\n' +
+                '                        <div style="overflow: hidden">\n' +
+                '                            <span class="ren">'+data.nickName+'</span>\n' +
+                '                            <span class="time">'+moment(data.createdAt).format('YYYY-MM-DD HH:mm:ss')+'</span>\n' +
+                '                        </div>\n' +
+                '                        <div class="desc">'+data.content+'</div>\n' +
+                '                    </div>\n' +
+                '                </li>');
+            scrollIntoView('#chat_list');
+            $('#content').val('');
+        })
         getList();
         var userId = Cookies.get('userId');
         var userid = userId.slice(3,userId.length-1);
-        $('#submit').on('tap',function(){
+        $('#submit').on('click',function(){
             if(userId==null){
                 return
             }
@@ -56,20 +70,7 @@
                 userId:userid,
                 content:$('#content').val().trim()
             })
-            socket.on('message',function(data){
-                $('#chat_list').append('<li>\n' +
-                    '                    <i class="iconfont icon-yonghu"></i>\n' +
-                    '                    <div class="desc_wrap">\n' +
-                    '                        <div style="overflow: hidden">\n' +
-                    '                            <span class="ren">'+data.nickName+'</span>\n' +
-                    '                            <span class="time">'+moment(data.createdAt).format('YYYY-MM-DD HH:mm:ss')+'</span>\n' +
-                    '                        </div>\n' +
-                    '                        <div class="desc">'+data.content+'</div>\n' +
-                    '                    </div>\n' +
-                    '                </li>');
-                scrollIntoView('#chat_list');
-                $('#content').val('');
-            })
+
         })
     })
     function getList(){
