@@ -5,6 +5,11 @@ $(function(){
     if(nickName!=null){
         $('#nicheng').html(nickName);
     }
+    var qrcode = new QRCode(document.getElementById("code"), {
+        width: 120,
+        height: 120
+    });
+    qrcode.makeCode(host+'/m/login');
     checkLogin();
     $('#logout').click(function(){
 

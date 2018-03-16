@@ -34,7 +34,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', function(req, res, next) {
     res.render('web/login',{title:'登录'});
 });
-app.get('/m', function(req, res, next) {
+app.get('/m/login', function(req, res, next) {
+    res.render('wap/login',{title:'登录'});
+});
+app.get('/m/video', function(req, res, next) {
     res.render('wap/video',{title:'在线直播'});
 });
 app.get('/video', function(req, res, next) {
