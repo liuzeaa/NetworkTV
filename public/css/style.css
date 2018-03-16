@@ -1,0 +1,154 @@
+*{padding: 0;margin: 0}
+.login_bg{
+    width:100%;height:100%;position:absolute;z-index: -1;
+}
+.pr{
+    position: relative;
+}
+.mt55{
+    margin-top: 55px;
+}
+/*flex最外框*/
+.page{
+    height:100%;
+    display: flex;
+    flex-direction: column;
+}
+.logo{
+    position: absolute;
+    left: 0;
+    top:-12px;
+}
+.sub{
+    height: 30px;padding:0 20px;display: block;line-height: 30px;color:#fff;font-size:21px;border-left:1px solid #fff;margin-left: 500px;margin-top: 30px;
+}
+.header{
+    flex: 0 0 90px;background: #093c7c;z-index: 2; position: relative;
+}
+.content{
+    flex:1;
+}
+/*flex底部，按钮平均分布*/
+.footer{ background: #222426;color: #fff;font-size:14px ;flex: 0 0 80px;text-align: center;line-height: 80px;}
+.form{
+    padding:30px;background: #fff; border-radius:5px;box-shadow: 0px 0px 20px rgba(29,42,87,0.3);
+    border: 10px solid rgba(255,255,255,0.5);
+    background-clip: padding-box;
+}
+.form .form-group{
+    margin-top: 20px;position: relative;
+}
+.form .form-control{
+    height: 44px;
+}
+.form-control{padding-left: 35px;}
+.form-group .iconfont{
+    font-size: 24px;
+    color: #ccc;
+    position: absolute;
+    left: 5px;
+    top:5px;
+}
+.login_title{
+    color:#555555;font-size:24px;text-align: center;
+}
+.checkbox input[type=checkbox]{
+    width:18px;height:18px;margin-top: 0px;
+}
+#LoginButton{
+    height: 45px;background: #377cd3;color:#fff;font-size: 18px;
+}
+.comment{
+    box-shadow: 0px 0px 20px rgba(29,42,87,0.3);height: 100%;display: flex;flex-direction: column;
+}
+.h100{
+    height: 100%;
+}
+.title{
+    border-bottom: 1px solid #ccc;flex: 0 0 40px;line-height: 30px;margin-bottom: 0px;
+}
+.title span{
+    color: #093c7c;font-size:18px;font-family: 'Microsoft YaHei UI';
+}
+.title .iconfont{
+    font-size: 24px;width:24px;height: 24px;float: left;margin-right: 10px;
+}
+.comment_wrap{
+    overflow: auto;flex: 1;
+}
+.comment_input{
+    flex: 0 0 200px;
+}
+.comment_wrap li{
+    padding: 15px 0px;border-bottom: 1px solid #ccc;list-style: none;min-height: 50px;position: relative;min-height: 50px;
+}
+.comment_wrap li .iconfont{
+    width:50px;height: 50px;border-radius:50% ;border:1px solid #ccc;background: #f0f0f0;text-align: center;line-height: 50px;display: block;position: absolute;left:0px;top:15px;
+    color: #ccc;font-size: 30px;
+}
+.desc_wrap{
+    padding-left:65px ;
+}
+.video_wrap{
+    padding: 20px;
+}
+.video{
+    background: #000;
+}
+.ren{
+    font-size: 14px;color:#333333
+}
+.time{
+    font-size: 14px;color:#999
+}
+.desc{
+    font-size:14px;color:#666;line-height: 25px;margin-top:8px;
+}
+.comment_input textarea{
+    width: 100%;border-radius: 3px;border: 1px solid #ccc;padding: 10px;box-sizing: border-box;height: 130px;outline: none;
+}
+.flex1{
+    flex: 1;
+}
+.flex{
+    display: flex;
+}
+.login_info{
+    margin: 25px 0px;
+}
+.login_info .iconfont{
+    width:40px;height: 40px;border-radius:50% ;border:1px solid #ccc;background: #fff;text-align: center;line-height: 40px;display: inline-block;
+    color: #ccc;font-size: 24px;margin-right: 10px;
+}
+.login_info span{
+    color:#fff;font-size: 18px;display: inline-block;height: 40px;line-height: 40px;
+}
+.login_info b{
+    margin:10px;color:#fff;height: 20px;display: inline-block;width:1px;background: #fff;;
+}
+.login_info a{
+    color:#fff;font-size: 18px;display: inline-block;height: 40px;line-height: 40px;
+}
+.code_wrap{
+    height:70px;margin:10px 0px;border:1px solid #fff;border-radius:3px;padding:12px;position: absolute;right:27%;cursor: pointer;
+}
+.zi{
+    color:#fff;line-height: 23px;font-size:16px;
+}
+.code .iconfont{
+    height:46px;width:46px;padding:6px;background: rgba(255,255,255,0.1);display: block; border: 1px solid rgba(255,255,255,0.5);
+    background-clip: padding-box;color:#fff;font-size:28px;margin-left:12px;border-radius: 3px;text-align: center;line-height:34px;
+}
+.code_img{
+    width:150px;height:150px;padding: 15px;background: #fff;position: absolute;top:60px;left:50%;margin-left: -68px;box-shadow: 0 0 5px rgba(0,0,0,.4);display: none;
+}
+.code_wrap:hover .code_img{
+    display: block;
+}
+.code_img:after{
+    content:'';width:15px;
+    height: 15px;display: block;position: absolute;top:-8px;transform: rotate(45deg);background: #fff;left:50%;margin-left: -8px;
+}
+.qRcode{
+    width:120px;height:120px;background: #ccc;
+}

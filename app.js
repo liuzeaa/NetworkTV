@@ -8,6 +8,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var user = require('./routes/user');
 var comment = require('./routes/comment');
+var Comment = require('./schemas/comment')
+var User = require('./schemas/user');
 app.all('*', (req, res, next) => {
     res.header("Access-Control-Allow-Origin", req.headers.origin || '*');
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
@@ -30,13 +32,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', function(req, res, next) {
-    res.render('login',{title:'登录',isLogin:false});
+    res.render('web/login',{title:'登录'});
 });
-app.get('/index', function(req, res, next) {
-    res.render('index',{title:'在线直播',isLogin:true});
+app.get('/m', function(req, res, next) {
+    res.render('wap/video',{title:'在线直播'});
+});
+app.get('/video', function(req, res, next) {
+    res.render('web/video',{title:'在线直播'});
 });
 app.get('/user', function(req, res, next) {
-    res.render('user',{title:'用户管理',isLogin:true});
+    res.render('web/user',{title:'用户管理'});
 });
 
 app.use('/user', user);
@@ -75,7 +80,6 @@ io.on('connection', function(socket) {
                 userid: socket.name,
                 username: onlineUsers[socket.name]
             }
-
             // 删除
             delete onlineUsers[socket.name]
             onlineCount--;
@@ -104,13 +108,15 @@ io.on('connection', function(socket) {
                         console.log(err);
                         return;
                     }
-                    io.emit('message', {
-                        nickName:doc.nickName,
-                        content:obj.content
-                    });
+                    if(doc!=null){
+                        io.emit('message', {
+                            nickName:doc.nickName,
+                            content:obj.content,
+                            createdAt:doc.createdAt
+                        });
+                    }
                 })
             }
         })
-
     });
 })

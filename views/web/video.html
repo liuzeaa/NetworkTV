@@ -1,0 +1,153 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/fonts/iconfont.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<section class="page">
+    <header class="header">
+        <div class="container-fluid pr">
+            <div class="logo" style="margin-left: 15px">
+                <img src="/img/logo.png"/>
+            </div>
+            <span class="sub pull-left">
+                网络电视台
+            </span>
+            <div class="code_wrap pull-left clearfix">
+                <div class="pull-left zi">
+                    扫一扫手机<br/>看视频评论
+                </div>
+                <div class="code pull-left pr">
+                    <i class="iconfont icon-erweima"></i>
+                    <div class="code_img">
+                        <div class="qRcode"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="login_info pull-right clearfix">
+                <i class="iconfont icon-yonghu pull-left"></i>
+                <span class="pull-left" id="nicheng"></span>
+                <b class="pull-left"></b>
+                <a class="pull-left" href="javascript:;" id="logout">退出登录</a>
+            </div>
+        </div>
+    </header>
+    <section class="content pr">
+        <div class="container-fluid" style="position: absolute;height: 100%;width: 100%">
+            <div class="row h100">
+                <div class="h100">
+                    <div class="col-lg-9 h100 flex video_wrap">
+                        <div class="video flex1">
+
+                        </div>
+                    </div>
+                    <div class="col-lg-3 comment">
+                        <h3 class="title">
+                            <span>
+                                <i class="iconfont icon-taolun"></i>
+                                讨论版块
+                            </span>
+                        </h3>
+                        <div class="comment_wrap">
+                            <ul class="chat_list" id="chat_list">
+
+                            </ul>
+                        </div>
+                        <div class="comment_input">
+                            <textarea placeholder="一起来分享下学习心得吧！" id="content" ></textarea>
+                            <button class="btn btn-primary pull-right" style="margin: 15px 0" id="submit">发起评论</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+        <div>版权所有：北京第二实验小永定分校  京ICP备15007511号  京公网安备11010902000289号 <span style="margin-left: 40px">在线人数：5</span></div>
+    </footer>
+</section>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.cookie.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/common.js"></script>
+<link href="https://cdn.bootcss.com/jquery.bootstrapvalidator/0.5.3/css/bootstrapValidator.min.css" rel="stylesheet">
+<script src="https://cdn.bootcss.com/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery.bootstrapvalidator/0.5.3/js/language/zh_CN.js"></script>
+<script src="/js/moment.min.js"></script>
+<script src="/js/jquery.tmpl.js"></script>
+<script id="chat_item" type="text/x-jquery-tmpl">
+    <li>
+        <i class="iconfont icon-yonghu"></i>
+        <div class="desc_wrap">
+            <div class="clearfix">
+            <span class="ren pull-left">${userId.nickName}</span>
+            <span class="time pull-right">${moment(createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
+        </div>
+        <div class="desc">
+            ${content}
+        </div>
+    </li>
+</script>
+<script id="chat_item1" type="text/x-jquery-tmpl">
+    <li>
+        <i class="iconfont icon-yonghu"></i>
+        <div class="desc_wrap">
+            <div class="clearfix">
+            <span class="ren pull-left">${nickName}</span>
+            <span class="time pull-right">${moment(createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
+        </div>
+        <div class="desc">
+            ${content}
+        </div>
+    </li>
+</script>
+<script>
+
+   getList();
+   function getList(){
+        $.ajax({
+            url:host+'/comment/list',
+            type:'POST',
+            dataType:'json',
+            success:function(res){
+                $('#chat_item').tmpl(res).appendTo('#chat_list');
+                scrollIntoView('#chat_list')
+            }
+        })
+   }
+   //定位最后一条讨论内容
+   function scrollIntoView(obj) {
+       var $obj = $(obj).children().last(); //找到要定位的讨论内容
+       var objd = $obj[0]; //转化为dom对象
+       objd.scrollIntoView();
+   }
+   var userId = $.cookie('userId');
+   var userid = userId.slice(3,userId.length-1);
+   $('#submit').click(function(){
+       if(userId==null){
+           return
+       }
+       if($('#content').val().trim()==null){
+           alert('请输入内容');
+           return
+       }
+
+       socket.emit('message',{
+           userId:userid,
+           content:$('#content').val().trim()
+       })
+       socket.on('message',function(data){
+           $('#chat_item1').tmpl(data).appendTo('#chat_list');
+           scrollIntoView('#chat_list');
+           $('#content').val('');
+       })
+
+   })
+</script>
+</body>
+</html>

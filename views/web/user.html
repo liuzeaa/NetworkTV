@@ -1,0 +1,273 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/fonts/iconfont.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<section class="page">
+    <header class="header">
+        <div class="container pr">
+            <div class="logo" style="margin-left: 15px">
+                <img src="/img/logo.png"/>
+            </div>
+            <span class="sub pull-left">
+                网络电视台
+            </span>
+            <div class="login_info pull-right clearfix">
+                <i class="iconfont icon-yonghu pull-left"></i>
+                <span class="pull-left" id="nicheng"></span>
+                <b class="pull-left"></b>
+                <a class="pull-left" href="javsacript:;" id="logout">退出登录</a>
+            </div>
+        </div>
+    </header>
+    <section class="content pr">
+        <div class="container mt55">
+            <div clas="row">
+                <div class="col-md-12">
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading clearfix">
+                            <h2 class="panel-title pull-left" style="line-height: 34px;">用户列表</h2>
+                            <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#createModal">增加用户</button>
+                            <button class="btn btn-primary pull-right" data-toggle="modal" style="margin-right:10px;" data-target="#importModal">导入用户</button>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table-hover table-bordered table">
+                                <thead>
+                                <tr>
+                                    <th>昵称</th>
+                                    <th>用户名</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody id="list">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+        <div>版权所有：北京第二实验小永定分校  京ICP备15007511号  京公网安备11010902000289号</div>
+    </footer>
+</section>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.cookie.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/jquery.tmpl.js"></script>
+<script src="/js/laypage/laypage.js"></script>
+<link href="https://cdn.bootcss.com/jquery.bootstrapvalidator/0.5.3/css/bootstrapValidator.min.css" rel="stylesheet">
+<script src="https://cdn.bootcss.com/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery.bootstrapvalidator/0.5.3/js/language/zh_CN.js"></script>
+<!-- 新增用户 -->
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">新增用户</h4>
+            </div>
+            <form class="form-horizontal" method="post" id="create_form">
+                <div class="modal-body" >
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="nickName">昵称</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="nickName" name="nickName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="pwd">密码</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="pwd" name="pwd">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- 编辑用户 -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">修改密码</h4>
+            </div>
+            <form class="form-horizontal" method="post" id="edit_form">
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="password">密码</label>
+                            <div class="col-md-6">
+                                <input type="password" class="form-control" id="password" name="password">
+                            </div>
+                        </div>
+                    </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- 导入用户 -->
+<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">导入用户</h4>
+            </div>
+            <form class="form-horizontal" method="post" id="import_form">
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <input type="file" id="file" name="file">
+                            </div>
+                        </div>
+                    </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary" id="save">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script id="item" type="text/x-jquery-tmpl">
+    <tr>
+        <td>${nickName}</td>
+        <td>${name}</td>
+        <td>
+            <button type="button" class="btn-primary btn" onclick="edit('${_id}')">修改密码</button>
+            <button type="button" class="btn btn-danger" onclick="remove('${_id}')">删除</button>
+        </td>
+    </tr>
+</script>
+<script type="text/javascript">
+    $(function(){
+        getList();
+    })
+    function getList(){
+        $.ajax({
+            url:host+'/user/list',
+            type:'POST',
+            dataType:'json',
+            xhrFields: {
+                withCredentials: true
+            },
+            data:{
+            },
+            success:function(result){
+                $("#list").empty();
+                $("#item").tmpl(result).appendTo("#list");
+            }
+        })
+    }
+    $('#create_form').bootstrapValidator({
+        fields:{
+            nickName:{
+                validators: {
+                    notEmpty: {//非空验证：提示消息
+                        message: '昵称不能为空'
+                    }
+                }
+            },
+            pwd:{
+                validators: {
+                    notEmpty: {
+                        message: '密码不能为空'
+                    }
+                }
+            }
+        }
+    }).on('success.form.bv', function(e) {//点击提交之后
+        e.preventDefault();
+        var $form = $(e.target);
+        var bv = $form.data('bootstrapValidator');
+        $.ajax({
+            url:host+'/user/create',
+            type:'POST',
+            dataType:'json',
+            xhrFields: {
+                withCredentials: true
+            },
+            data:{
+                nickName:$('#nickName').val().trim(),
+                password:$('#pwd').val().trim()
+            },
+            success:function(result){
+                getList();
+                $('#createModal').modal('hide')
+            }
+        })
+    });
+
+    function edit(id){
+        $('#editModal').modal('show');
+        $('#edit_form').bootstrapValidator({
+            fields:{
+                password:{
+                    validators: {
+                        notEmpty: {
+                            message: '密码不能为空'
+                        }
+                    }
+                }
+            }
+        }).on('success.form.bv', function(e) {//点击提交之后
+            e.preventDefault();
+            var $form = $(e.target);
+            var bv = $form.data('bootstrapValidator');
+            $.ajax({
+                url:host+'/user/edit/'+id,
+                type:'POST',
+                dataType:'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                data:{
+                    password:$('#password').val().trim()
+                },
+                success:function(result){
+                    getList();
+                    $('#editModal').modal('hide')
+                }
+            })
+        });
+    }
+    function remove(id){
+        $.ajax({
+            url:host+'/user/delete/'+id,
+            type:'POST',
+            dataType:'json',
+            xhrFields: {
+                withCredentials: true
+            },
+            success:function(result){
+                getList();
+            }
+        })
+    }
+</script>
+</body>
+</html>

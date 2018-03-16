@@ -7,30 +7,30 @@ var crypto = require('crypto');
 router.post('/login',function(req,res,next){
     var userName = req.body.name;
     var userPwd = req.body.password;
-    console.log(userName);
     var md5 = crypto.createHash("md5");
     var newPas = md5.update(userPwd).digest("hex");
-    User.findOne({name:userName,password:newPas,isDelected:false},function(err,doc) {
+    User.findOne({name:userName,isDelected:false},function(err,doc) {
         if (err) {
             res.send(err.message);
             return
         }
         if (doc != null){
-            res.cookie('isAdmin', doc.isAdmin, {
-                path: '/',
-                maxAge: 1000 * 60 * 60
-            })
+            if(doc.password==newPas){
+                res.cookie('isAdmin', doc.isAdmin, {
+                    path: '/',
+                    maxAge: 1000 * 60 * 60*24*7
+                })
                 res.cookie('userId', doc._id, {
                     path: '/',
-                    maxAge: 1000 * 60 * 60
+                    maxAge: 1000 * 60 * 60*24*7
                 })
                 res.cookie("userName", doc.name, {
                     path: '/',
-                    maxAge: 1000 * 60 * 60
+                    maxAge: 1000 * 60 * 60*24*7
                 });
                 res.cookie("nickName", doc.nickName, {
                     path: '/',
-                    maxAge: 1000 * 60 * 60
+                    maxAge: 1000 * 60 * 60*24*7
                 });
                 res.send({
                     isAdmin: doc.isAdmin,
@@ -38,26 +38,37 @@ router.post('/login',function(req,res,next){
                     userName: doc.name,
                     nickName: doc.nickName
                 });
+            }else{
+                res.json({
+                    status:'0',
+                    msg:'密码错误'
+                })
             }
+        }else{
+            res.json({
+                status:'1',
+                msg:'该用户不存在'
+            })
+        }
     })
 })
 //退出
 router.post("/logout", function (req,res,next) {
     res.cookie('isAdmin','',{
         path:'/',
-        maxAge:1000*60*60
+        maxAge:1000*60*60*24*7
     })
     res.cookie('userId','',{
         path:'/',
-        maxAge:1000*60*60
+        maxAge:1000*60*60*24*7
     })
     res.cookie("userName",'',{
         path:'/',
-        maxAge:1000*60*60
+        maxAge:1000*60*60*24*7
     });
     res.cookie("nickName",'',{
         path:'/',
-        maxAge:1000*60*60
+        maxAge:1000*60*60*24*7
     });
     res.json({
         status:"0",
@@ -101,7 +112,7 @@ router.post('/create',function(req, res, next){
     var nickName = req.body.nickName;
     console.log(nickName)
     var md5 = crypto.createHash("md5");
-    var newPas = md5.update('123qwe').digest("hex");
+    var newPas = md5.update(req.body.password).digest("hex");
     var name = pinyin(req.body.nickName,{style:pinyin.STYLE_NORMAL}).join(',').replace(/\,+/,'');
     User.findOne({
         name:name
