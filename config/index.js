@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost/NetworkTV");
+mongoose.connect("mongodb://localhost:27017/NetworkTV");
 
 var db = mongoose.connection;
 

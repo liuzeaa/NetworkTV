@@ -1,4 +1,4 @@
-const host = 'http://localhost:3000';
+const host = 'http://192.168.1.25:3000';
 var socket = io.connect();
 $(function(){
     var nickName = Cookies.get('nickName')
