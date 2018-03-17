@@ -113,7 +113,7 @@ router.post('/create',function(req, res, next){
     console.log(nickName)
     var md5 = crypto.createHash("md5");
     var newPas = md5.update(req.body.password).digest("hex");
-    var name = pinyin(req.body.nickName,{style:pinyin.STYLE_NORMAL}).join(',').replace(/\,+/,'');
+    var name = pinyin(req.body.nickName,{style:pinyin.STYLE_NORMAL}).join(',').replace(/\,/g,'');
     User.findOne({
         name:name
     },function(err,doc){

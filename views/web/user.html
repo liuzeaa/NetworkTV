@@ -87,7 +87,7 @@
                     <div class="form-group">
                         <label class="col-md-3 control-label" for="pwd">密码</label>
                         <div class="col-md-6">
-                            <input type="text" class="form-control" id="pwd" name="pwd">
+                            <input type="password" class="form-control" id="pwd" name="pwd">
                         </div>
                     </div>
                 </div>
@@ -199,7 +199,10 @@
                 },
                 success:function(result){
                     getList();
-                    $('#createModal').modal('hide')
+                    $('#createModal').modal('hide');
+                    $('#nickName').val('')
+                    $('#pwd').val('')
+
                 }
             })
         });
@@ -248,7 +251,8 @@
                 },
                 success:function(result){
                     getList();
-                    $('#editModal').modal('hide')
+                    $('#editModal').modal('hide');
+                    $('#password').val('')
                 }
             })
         });
