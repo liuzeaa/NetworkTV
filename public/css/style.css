@@ -77,7 +77,7 @@
     overflow: auto;flex: 1;
 }
 .comment_input{
-    flex: 0 0 200px;
+    flex: 0 0 160px;
 }
 .comment_wrap li{
     padding: 15px 0px;border-bottom: 1px solid #ccc;list-style: none;min-height: 50px;position: relative;min-height: 50px;
@@ -105,7 +105,7 @@
     font-size:14px;color:#666;line-height: 25px;margin-top:8px;
 }
 .comment_input textarea{
-    width: 100%;border-radius: 3px;border: 1px solid #ccc;padding: 10px;box-sizing: border-box;height: 130px;outline: none;
+    width: 100%;border-radius: 3px;border: 1px solid #ccc;padding: 10px;box-sizing: border-box;height: 100px;outline: none;
 }
 .flex1{
     flex: 1;
