@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/fonts/iconfont.css">
     <link rel="stylesheet" href="/css/style.css">
+
 </head>
 <body>
 <section class="page">
@@ -41,8 +42,25 @@
             <div class="row h100">
                 <div class="h100">
                     <div class="col-lg-9 h100 flex video_wrap">
-                        <div class="video flex1">
-
+                        <div class="video flex1 flex">
+                            <div class="close_light_bg" id="close_light_bg"></div>
+                            <div class="video flex1" id="CuPlayer" >
+                                <SCRIPT LANGUAGE=JavaScript>
+                                    var vID        = "";
+                                    var vWidth     = "100%";
+                                    var vHeight    = "100%";
+                                    var vFile      = "/img/CuSunV2setLive.xml";
+                                    var vPlayer    = "/img/player.swf?v=2.5";
+                                    var vPic       = "/img/htgd.jpg";
+                                    var vCssurl    = "/css/mini.css";
+                                    //PC端
+                                    var vServer    = vServer;
+                                    var vMp4url    = "myStream";
+                                    //安卓端,iOS端,wp
+                                    var vIosurl    = vIosurl;
+                                </SCRIPT>
+                                <script class="CuPlayerVideo" data-mce-role="CuPlayerVideo" type="text/javascript" src="/js/CuSunL2.min.js"></script>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-3 comment">
@@ -67,10 +85,11 @@
         </div>
     </section>
     <footer class="footer">
-        <div>版权所有：北京第二实验小永定分校  京ICP备15007511号  京公网安备11010902000289号 <span style="margin-left: 40px">在线人数：5</span></div>
+        <div>版权所有：北京第二实验小永定分校  京ICP备15007511号  京公网安备11010902000289号 <!--<span style="margin-left: 40px">在线人数：5</span>--></div>
     </footer>
 </section>
 <script src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/action.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/js.cookie.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>

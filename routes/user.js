@@ -3,6 +3,12 @@ var pinyin = require('pinyin');
 var router = express.Router();
 var User = require('../schemas/user');
 var crypto = require('crypto');
+var fs = require('fs');
+let ejsExcel=require('ejsexcel');
+var multer = require('multer');
+var upload = multer({
+    dest: 'public/files/'
+});
 //登录
 router.post('/login',function(req,res,next){
     var userName = req.body.name;
@@ -172,7 +178,28 @@ router.post("/delete/:id",function(req,res,next){
     })
 })
 //导入用户
-router.post('/import',function(req,res,next){
-
+router.post('/import', upload.single('uploadfile'),function(req,res,next){
+    var file = req.file;
+    let exBuf=fs.readFileSync(__dirname+'/../'+file.path);
+    ejsExcel.getExcelArr(exBuf).then(exlJson=>{
+        let workBook=exlJson;
+        let workSheets=workBook[0].slice(1);
+        var obj = []
+        workSheets.forEach((item,index)=>{
+            var name = pinyin(item[0],{style:pinyin.STYLE_NORMAL}).join(',').replace(/\,/g,'');
+            var md5 = crypto.createHash("md5");
+            var newPas = md5.update(item[1]).digest("hex");
+            obj.push({nickName:item[0],name:name,password:newPas});
+        })
+        User.create(obj,function(err1,doc2){
+            if(err1){
+                res.send(err1.message);
+                return;
+            }
+            res.redirect('/user')
+        })
+    }).catch(error=>{
+        console.log(error);
+    });
 })
 module.exports = router;

@@ -63,3 +63,28 @@
 .title .iconfont{
     font-size: 24px;width:24px;height: 24px;float: left;margin-right: 10px;
 }
+.form{
+    padding:20px 30px;background: #fff; border-radius:5px;box-shadow: 0px 0px 20px rgba(29,42,87,0.3);
+    border: 6px solid rgba(255,255,255,0.5);
+    background-clip: padding-box;width: 85%;
+}
+.form .form-control{
+    height: 44px;border-radius: 22px;
+}
+.form .form-group{
+    margin-top: 10px;position: relative;
+}
+.form-control{padding-left: 35px;}
+.form-group .iconfont{
+    font-size: 24px;
+    color: #ccc;
+    position: absolute;
+    left: 5px;
+    top:5px;
+}
+.checkbox input[type=checkbox]{
+    width:18px;height:18px;margin-top: 0px;
+}
+.logo{
+    width:65%;margin-bottom: 40px;
+}

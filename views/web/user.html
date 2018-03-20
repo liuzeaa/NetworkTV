@@ -134,18 +134,21 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">导入用户</h4>
             </div>
-            <form class="form-horizontal" method="post" id="import_form">
+            <form method="post" action="/user/import" enctype="multipart/form-data" class="form-horizontal" id="import_modal">
                 <div class="modal-body">
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <div class="col-md-6">
-                                <input type="file" id="file" name="file">
-                            </div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <input type="file" id="file" name="uploadfile" />
                         </div>
-                    </form>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <a href="/files/用户管理.xlsx">下载模板</a>
+                        </div>
+                    </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="submit" class="btn btn-primary" id="save">保存</button>
+                        <button type="submit" class="btn btn-primary" >确认</button>
                     </div>
                 </div>
             </form>
@@ -165,6 +168,7 @@
 <script type="text/javascript">
     $(function(){
         getList();
+
         $('#create_form').bootstrapValidator({
             fields:{
                 nickName:{

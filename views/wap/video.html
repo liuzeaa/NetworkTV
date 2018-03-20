@@ -5,12 +5,35 @@
     <title><%= title %></title>
     <link rel="stylesheet" href="/fonts/iconfont.css">
     <link rel="stylesheet" href="/css/wap.css">
+    <script src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/action.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/moment.min.js"></script>
+    <script src="/js/wapCommon.js"></script>
+    <script src="/js/js.cookie.min.js"></script>
 </head>
 <body>
 <section class="page">
     <section class="content" >
         <div class="video_wrap">
-
+            <div class="close_light_bg" id="close_light_bg"></div>
+            <div class="video flex1" id="CuPlayer" >
+                <SCRIPT LANGUAGE=JavaScript>
+                    var vID        = "";
+                    var vWidth     = "100%";
+                    var vHeight    = "100%";
+                    var vFile      = "/img/CuSunV2setLive.xml";
+                    var vPlayer    = "/img/player.swf?v=2.5";
+                    var vPic       = "/img/htgd.jpg";
+                    var vCssurl    = "/css/mini.css";
+                    //PC端
+                    var vServer    = vServer;
+                    var vMp4url    = "myStream";
+                    //安卓端,iOS端,wp
+                    var vIosurl    = vIosurl;
+                </SCRIPT>
+                <script class="CuPlayerVideo" data-mce-role="CuPlayerVideo" type="text/javascript" src="/js/CuSunL2.min.js"></script>
+            </div>
         </div>
         <div class="chat_wrap">
             <div class="title">
@@ -34,11 +57,7 @@
         <button class="btn" id="submit">发起评论</button>
     </footer>
 </section>
-<script src="/js/zepto.min.js"></script>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/moment.min.js"></script>
-<script src="/js/wapCommon.js"></script>
-<script src="/js/js.cookie.min.js"></script>
+
 <script>
     $(function(){
         socket.on('message',function(data){
