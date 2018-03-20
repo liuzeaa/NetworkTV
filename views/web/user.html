@@ -37,10 +37,16 @@
                             <button class="btn btn-primary pull-right" data-toggle="modal" style="margin-right:10px;" data-target="#importModal">导入用户</button>
                         </div>
                         <div class="panel-body">
-                            <table class="table-hover table-bordered table">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="请输入姓名" id="searchName" style="width:215px">
+                                <button class="btn btn-info" type="button" id="Search" onclick="getList(1,10)">
+                                    搜索
+                                </button>
+                            </div>
+                            <table class="table-hover table-bordered table" style="margin-top: 15px">
                                 <thead>
                                 <tr>
-                                    <th>昵称</th>
+                                    <th>姓名</th>
                                     <th>用户名</th>
                                     <th>操作</th>
                                 </tr>
@@ -222,7 +228,8 @@
             },
             data:{
                 pageIndex:pageIndex,
-                pageSize:pageSize
+                pageSize:pageSize,
+                name:$('#searchName').val().trim()
             },
             success:function(result){
                 $("#list").empty();
