@@ -33,15 +33,17 @@
                     <div class="panel panel-default">
                         <div class="panel-heading clearfix">
                             <h2 class="panel-title pull-left" style="line-height: 34px;">用户列表</h2>
-                            <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#createModal">增加用户</button>
-                            <button class="btn btn-primary pull-right" data-toggle="modal" style="margin-right:10px;" data-target="#importModal">导入用户</button>
                         </div>
                         <div class="panel-body">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="请输入姓名" id="searchName" style="width:215px">
-                                <button class="btn btn-info" type="button" id="Search" onclick="getList(1,10)">
-                                    搜索
-                                </button>
+                            <div class="clearfix">
+                                <div class="input-group pull-left">
+                                    <input type="text" class="form-control" placeholder="请输入姓名" id="searchName" style="width:215px">
+                                    <button class="btn btn-info" type="button" id="Search" onclick="getList(1,10)">
+                                        搜索
+                                    </button>
+                                </div>
+                                <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#createModal">增加用户</button>
+                                <button class="btn btn-primary pull-right" data-toggle="modal" style="margin-right:10px;" data-target="#importModal">导入用户</button>
                             </div>
                             <table class="table-hover table-bordered table" style="margin-top: 15px">
                                 <thead>
