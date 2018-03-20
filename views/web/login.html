@@ -61,7 +61,9 @@
 <script>
     $(function(){
         init()
-
+        socket.on('login',function(data){
+            console.log(data)
+        })
         $('#login_form').bootstrapValidator({
             fields:{
                 name:{
@@ -102,11 +104,6 @@
                         alert(result.msg);
                         return;
                     }else{
-                        socket.emit('login',{
-                            userid:result.userId,
-                            username:result.userName,
-                            nickname:result.nickName
-                        });
                         if($('#check').is(':checked')){
                             Cookies.remove('name');
                             Cookies.remove('password');

@@ -85,7 +85,7 @@
         </div>
     </section>
     <footer class="footer">
-        <div>版权所有：北京第二实验小永定分校  京ICP备15007511号  京公网安备11010902000289号 <!--<span style="margin-left: 40px">在线人数：5</span>--></div>
+        <div>版权所有：北京第二实验小永定分校  京ICP备15007511号  京公网安备11010902000289号 <span style="margin-left: 40px" id="onlinecount"></span></div>
     </footer>
 </section>
 <script src="/js/jquery.min.js"></script>
@@ -127,6 +127,19 @@
 </script>
 <script>
     $(function(){
+        var userId = Cookies.get('userId');
+        var userName = Cookies.get('userName');
+        var nickname = Cookies.get('nickName');
+        var userid = userId.slice(3,userId.length-1);
+        socket.emit('login',{
+            userid:userid,
+            username:userName,
+            nickname:nickname
+        });
+        socket.on('login',function(data){
+            console.log(data);
+            $('#onlinecount').html('在线人数：'+data.onlineCount);
+        })
         socket.on('message',function(data){
             console.log(data)
             $('#chat_item1').tmpl(data).appendTo('#chat_list');
@@ -139,8 +152,7 @@
         });
         qrcode.makeCode(host+'/m/login');
         getList();
-        var userId = Cookies.get('userId');
-        var userid = userId.slice(3,userId.length-1);
+
         $('#submit').click(function(){
             if(userId==null){
                 return

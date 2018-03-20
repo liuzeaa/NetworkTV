@@ -7,9 +7,6 @@ $(function(){
     if(nickName!=null){
         $('#nicheng').html(nickName);
     }
-    socket.on('login',function(data){
-        console.log(data)
-    })
     checkLogin();
     $('#logout').click(function(){
         $.ajax({
