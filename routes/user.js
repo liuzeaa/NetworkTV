@@ -7,7 +7,7 @@ var fs = require('fs');
 let ejsExcel=require('ejsexcel');
 var multer = require('multer');
 var upload = multer({
-    dest: 'public/files/'
+    dest: 'public/uploads/'
 });
 //登录
 router.post('/login',function(req,res,next){
@@ -198,22 +198,71 @@ router.post('/import', upload.single('uploadfile'),function(req,res,next){
     ejsExcel.getExcelArr(exBuf).then(exlJson=>{
         let workBook=exlJson;
         let workSheets=workBook[0].slice(1);
-        var obj = []
+        var nickAry = [];
         workSheets.forEach((item,index)=>{
             var name = pinyin(item[0],{style:pinyin.STYLE_NORMAL}).join(',').replace(/\,/g,'');
             var md5 = crypto.createHash("md5");
             var newPas = md5.update(item[1]).digest("hex");
-            obj.push({nickName:item[0],name:name,password:newPas});
+            nickAry.push({nickName:item[0],name:name,password:newPas});
         })
-        User.create(obj,function(err1,doc2){
-            if(err1){
-                res.send(err1.message);
+        User.find({isDelected:false,isAdmin:false},function(err,list){
+            if(err){
+                res.send(err.message);
                 return;
             }
-            res.redirect('/user')
+            var intersection = array_intersection(list,nickAry);
+            for(var i = 0;i<intersection.length;i++){
+                User.remove({
+                    nickName:intersection[i].nickName
+                },function(err,doc){
+
+                        console.log(doc)
+                })
+            }
+            User.create(nickAry,function(err1,doc2){
+                if(err1){
+                    res.send(err1.message);
+                    return;
+                }
+                res.redirect('/user')
+            })
         })
+
     }).catch(error=>{
         console.log(error);
     });
 })
+function array_remove_repeat(a) { // 去重
+    var r = [];
+    for(var i = 0; i < a.length; i ++) {
+        var flag = true;
+        var temp = a[i];
+        for(var j = 0; j < r.length; j ++) {
+            if(temp.nickName === r[j].nickName) {
+                flag = false;
+                break;
+            }
+        }
+        if(flag) {
+            r.push(temp);
+        }
+    }
+    return r;
+}
+function array_union(a, b) { // 并集
+    return array_remove_repeat(a.concat(b));
+}
+function array_intersection(a, b) { // 交集
+    var result = [];
+    for(var i = 0; i < b.length; i ++) {
+        var temp = b[i];
+        for(var j = 0; j < a.length; j ++) {
+            if(temp.nickName === a[j].nickName) {
+                result.push(temp);
+                break;
+            }
+        }
+    }
+    return array_remove_repeat(result);
+}
 module.exports = router;
