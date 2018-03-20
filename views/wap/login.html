@@ -86,11 +86,6 @@
                         alert(result.msg);
                         return;
                     }else{
-                        socket.emit('login',{
-                            userid:result.userId,
-                            username:result.userName,
-                            nickname:result.nickName
-                        });
                         if($('#check').is(':checked')){
                             Cookies.remove('name');
                             Cookies.remove('password');
