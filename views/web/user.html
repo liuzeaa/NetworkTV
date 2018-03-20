@@ -49,6 +49,7 @@
 
                                 </tbody>
                             </table>
+                            <div id="page" style="text-align: center"></div>
                         </div>
                     </div>
                 </div>
@@ -167,7 +168,7 @@
 </script>
 <script type="text/javascript">
     $(function(){
-        getList();
+        getList(1,10);
 
         $('#create_form').bootstrapValidator({
             fields:{
@@ -202,7 +203,7 @@
                     password:$('#pwd').val().trim()
                 },
                 success:function(result){
-                    getList();
+                    getList(1,10);
                     $('#createModal').modal('hide');
                     $('#nickName').val('')
                     $('#pwd').val('')
@@ -211,7 +212,7 @@
             })
         });
     })
-    function getList(){
+    function getList(pageIndex,pageSize){
         $.ajax({
             url:host+'/user/list',
             type:'POST',
@@ -220,10 +221,24 @@
                 withCredentials: true
             },
             data:{
+                pageIndex:pageIndex,
+                pageSize:pageSize
             },
             success:function(result){
                 $("#list").empty();
-                $("#item").tmpl(result).appendTo("#list");
+                $("#item").tmpl(result.data).appendTo("#list");
+                laypage({
+                    cont: 'page', //容器。值支持id名、原生dom对象，jquery对象。【如该容器为】：<div id="page1"></div>
+                    pages: Math.ceil(result.totalCount / pageSize), //通过后台拿到的总页数
+                    curr: pageIndex || 1, //当前页
+                    skip: true, //是否开启跳页
+                    skin: '#007cdb',
+                    jump: function(obj, first) { //触发分页后的回调
+                        if (!first) { //点击跳页触发函数自身，并传递当前页：obj.curr
+                            getList(obj.curr, pageSize);
+                        }
+                    }
+                });
             }
         })
     }
@@ -254,7 +269,7 @@
                     password:$('#password').val().trim()
                 },
                 success:function(result){
-                    getList();
+                    getList(1,10);
                     $('#editModal').modal('hide');
                     $('#password').val('')
                 }
@@ -270,7 +285,7 @@
                 withCredentials: true
             },
             success:function(result){
-                getList();
+                getList(1,10);
             }
         })
     }
