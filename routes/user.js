@@ -141,12 +141,23 @@ router.post('/create',function(req, res, next){
             res.send(err.message);
             return;
         }
+        console.log(doc)
         if(doc){
-            res.json({
-                status:'1',
-                msg:'用户已存在',
-                result:''
-            });
+            if(doc.isDelected){
+                User.update({_id:doc._id},{
+                    $set:{
+                        isDelected:false
+                    }
+                },function(err,doc){
+                    res.json('edit success!');
+                })
+            }else {
+                res.json({
+                    status:'1',
+                    msg:'用户已存在',
+                    result:''
+                });
+            }
         }else{
             User.create({
                 nickName:nickName,
