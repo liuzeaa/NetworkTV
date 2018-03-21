@@ -146,6 +146,7 @@ router.post('/create',function(req, res, next){
             if(doc.isDelected){
                 User.update({_id:doc._id},{
                     $set:{
+                        password:newPas,
                         isDelected:false
                     }
                 },function(err,doc){
