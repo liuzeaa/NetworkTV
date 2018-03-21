@@ -23,7 +23,10 @@
     color: #fff;
 }
 .video_wrap{
-    flex:3;background: #000;
+    flex:3;background: #000;overflow: hidden;position: relative;
+}
+.video video{
+    height: 100%;
 }
 .chat_wrap{
     flex:6;display: flex;flex-direction: column;

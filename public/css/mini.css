@@ -50,7 +50,7 @@ a.p145x100 { border:1px #dadada solid; padding:1px;display:block; width:145px;ma
 a.p145x100:hover{ border:1px #eb6100 solid; } 
 
 /* other */
-.video { OVERFLOW: hidden; WIDTH: 100%; POSITION: relative}
+.video { OVERFLOW: hidden; WIDTH: 100%; height: 100%;position: absolute;}
 .close_light_bg {DISPLAY: none; BACKGROUND: #000;  LEFT: 0px; WIDTH: 100%; POSITION: absolute; TOP: 0px; HEIGHT: 100%; opacity: .95}
 div.help { line-height:32px; font-size:14px; padding:10px 20px;}
 div.help p.open { padding-left:35px;}
