@@ -60,6 +60,15 @@
 
 <script>
     $(function(){
+        var userId = Cookies.get('userId');
+        var userName = Cookies.get('userName');
+        var nickname = Cookies.get('nickName');
+        var userid = userId.slice(3,userId.length-1);
+        socket.emit('login',{
+            userid:userid,
+            username:userName,
+            nickname:nickname
+        });
         socket.on('message',function(data){
             $('#chat_list').append('<li>\n' +
                 '                    <i class="iconfont icon-yonghu"></i>\n' +
