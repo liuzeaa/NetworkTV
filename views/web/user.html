@@ -77,6 +77,7 @@
 <script src="/js/laypage/laypage.js"></script>
 <link href="/css/bootstrapValidator.min.css" rel="stylesheet">
 <script src="/js/bootstrapValidator.min.js"></script>
+<script src="/js/layer/layer.js"></script>
 <!-- 新增用户 -->
 <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -286,17 +287,23 @@
         });
     }
     function remove(id){
-        $.ajax({
-            url:host+'/user/delete/'+id,
-            type:'POST',
-            dataType:'json',
-            xhrFields: {
-                withCredentials: true
-            },
-            success:function(result){
-                getList(1,10);
-            }
-        })
+        layer.confirm('您确定要删除改用户吗？', {
+            btn: ['确定', '取消'],
+            title: '操作'
+        },function(index){
+            $.ajax({
+                url:host+'/user/delete/'+id,
+                type:'POST',
+                dataType:'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                success:function(result){
+                    getList(1,10);
+                    layer.close(index)
+                }
+            })
+        },function () { })
     }
 </script>
 </body>
