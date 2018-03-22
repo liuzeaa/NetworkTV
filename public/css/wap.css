@@ -1,4 +1,4 @@
-*{
+﻿*{
     padding: 0;margin: 0;
 }
 .pr{
@@ -14,7 +14,7 @@
     flex:1;display: flex;flex-direction: column;
 }
 /*flex底部，按钮平均分布*/
-.footer{ background: #f1f7ff;flex: 0 0 35px;padding:15px;display: flex;border-top:1px solid #ccc;}
+.footer{ background: #f1f7ff;flex: 0 0 35px;padding:8px 15px;display: flex;border-top:1px solid #ccc;}
 .input_control{
     flex:3;min-height: 35px;background: #fff;color:#333;font-size:14px;padding:5px 10px;border-radius:15px;border: 1px solid #ccc;outline: none;line-height: 25px;
 }
@@ -23,63 +23,63 @@
     color: #fff;
 }
 .video_wrap{
-    flex:3;background: #000;overflow: hidden;position: relative;
+    background: #000;overflow: hidden;position: relative;flex:0 0 205px
 }
 .video video{
     height: 100%;
 }
 .chat_wrap{
-    flex:6;display: flex;flex-direction: column;
+    flex:1;display: flex;flex-direction: column;
 }
 .chat_list{
     flex: 1;overflow: auto;
 }
 .chat_list li{
-    padding: 15px;border-bottom: 1px solid #ccc;list-style: none;min-height: 35px;position: relative;
+    padding: 6px 15px;border-bottom: 1px solid #ccc;list-style: none;min-height: 35px;position: relative;
 }
 .chat_list li:last-child{
     border-bottom: none;
 }
 .chat_list li .iconfont{
-    width:35px;height: 35px;border-radius:50% ;border:1px solid #ccc;background: #f0f0f0;text-align: center;line-height:35px;display: block;position: absolute;left:15px;top:15px;
+    width:35px;height: 35px;border-radius:50% ;border:1px solid #ccc;background: #f0f0f0;text-align: center;line-height:35px;display: block;position: absolute;left:15px;top:6px;
     color: #ccc;font-size: 20px;
 }
 .desc_wrap{
     padding-left:50px ;
 }
 .ren{
-    font-size: 14px;color:#333333;
+    font-size: 14px;color:#666;
     float: left;
 }
 .time{
-    font-size: 14px;color:#999;float: right;
+    font-size: 14px;color:#666;float: right;
 }
 .desc{
-    font-size:14px;color:#666;line-height: 25px;margin-top:8px;word-break: break-all;
+    font-size:14px;color:#000;line-height: 25px;word-break: break-all;
 }
 .title{
     border-bottom: 1px solid #ccc;flex: 0 0 40px;line-height: 40px;padding: 0px 15px;
 }
 .title span{
-    font-size:16px;
+    font-size:14px;
 }
 .title .iconfont{
     font-size: 24px;width:24px;height: 24px;float: left;margin-right: 10px;
 }
 .form{
-    padding:20px 30px;background: #fff; border-radius:5px;box-shadow: 0px 0px 20px rgba(29,42,87,0.3);
-    border: 6px solid rgba(255,255,255,0.5);
-    background-clip: padding-box;width: 85%;
+    padding:10px 30px 0px 30px;background: rgba(255,255,255,0.6); border-radius:5px;box-shadow: 0px 0px 20px rgba(29,42,87,0.3);
+    border: 6px solid rgba(255,255,255,0.48);
+    background-clip: padding-box;width: 70%;
 }
 .form .form-control{
-    height: 44px;border-radius: 22px;
+    height: 34px;border-radius: 17px;
 }
 .form .form-group{
-    margin-top: 10px;position: relative;
+    margin-top: 8px;position: relative;margin-bottom:8px;
 }
 .form-control{padding-left: 35px;}
 .form-group .iconfont{
-    font-size: 24px;
+    font-size: 18px;
     color: #ccc;
     position: absolute;
     left: 5px;
@@ -88,6 +88,7 @@
 .checkbox input[type=checkbox]{
     width:18px;height:18px;margin-top: 0px;
 }
+.checkbox label{font-size:14px;}
 .logo{
     width:65%;margin-bottom: 40px;
 }

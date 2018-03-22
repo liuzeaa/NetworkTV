@@ -6,7 +6,7 @@
  		JcScpImgDisplay = "yes"
 		JcScpAutoHideControl="yes"
 		JcScpControlHideTime="6.5"
-		JcScpControlHeight="40"	
+		JcScpControlHeight="0"	
 		JcScpShowList= "no"
 		JcScpAutoRepeat = "no"
 		JcScpAutoPlay = "yes"

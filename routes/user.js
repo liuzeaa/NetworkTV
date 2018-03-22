@@ -1,4 +1,4 @@
-var express = require('express');
+﻿var express = require('express');
 var pinyin = require('pinyin');
 var router = express.Router();
 var User = require('../schemas/user');
@@ -119,6 +119,7 @@ router.post('/list', function(req, res, next) {
                 res.send(err.message);
                 return;
             }
+
             res.json({
                 totalCount:list.length,
                 data:list2

@@ -1,4 +1,4 @@
-var express = require('express');
+﻿var express = require('express');
 var path = require('path');
 var app = express();
 var server = require('http').Server(app);
@@ -31,6 +31,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.get('/', function(req, res, next) {
     res.render('web/login',{title:'登录'});
 });
@@ -50,7 +51,7 @@ app.get('/user', function(req, res, next) {
 app.use('/user', user);
 app.use('/comment', comment);
 
-server.listen(3000);
+server.listen(80);
 // 在线用户
 var onlineUsers = {};
 // 当前在线人数

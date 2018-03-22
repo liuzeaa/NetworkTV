@@ -1,4 +1,5 @@
-*{padding: 0;margin: 0}
+﻿*{padding: 0;margin: 0}
+body{font-family:microsoft yahei,heiti;}
 .login_bg{
     width:100%;height:100%;position:absolute;z-index: -1;
 }
@@ -6,7 +7,7 @@
     position: relative;
 }
 .mt55{
-    margin-top: 55px;
+    margin-top: 17px;
 }
 /*flex最外框*/
 .page{
@@ -20,7 +21,7 @@
     top:-12px;
 }
 .sub{
-    height: 30px;padding:0 20px;display: block;line-height: 30px;color:#fff;font-size:21px;border-left:1px solid #fff;margin-left: 500px;margin-top: 30px;
+    height: 30px;padding:0 20px;display: block;line-height: 30px;color:#fff;font-size:21px;margin-left: 500px;margin-top: 30px;
 }
 .header{
     flex: 0 0 90px;background: #093c7c;z-index: 2; position: relative;
@@ -68,7 +69,7 @@
     border-bottom: 1px solid #ccc;flex: 0 0 40px;line-height: 30px;margin-bottom: 0px;
 }
 .title span{
-    color: #093c7c;font-size:18px;font-family: 'Microsoft YaHei UI';
+    color: #093c7c;font-size:18px;font-family: microsoft yahei;
 }
 .title .iconfont{
     font-size: 24px;width:24px;height: 24px;float: left;margin-right: 10px;
@@ -80,11 +81,11 @@
     flex: 0 0 160px;
 }
 .comment_wrap li{
-    padding: 15px 0px;border-bottom: 1px solid #ccc;list-style: none;min-height: 50px;position: relative;min-height: 50px;
+    padding: 6px 0px;border-bottom: 1px solid #ccc;list-style: none;min-height: 50px;position: relative;min-height: 50px;
 }
 .comment_wrap li .iconfont{
-    width:50px;height: 50px;border-radius:50% ;border:1px solid #ccc;background: #f0f0f0;text-align: center;line-height: 50px;display: block;position: absolute;left:0px;top:15px;
-    color: #ccc;font-size: 30px;
+    width:40px;height: 40px;border-radius:50% ;border:1px solid #ccc;background: #f0f0f0;text-align: center;line-height: 40px;display: block;position: absolute;left:0px;top:6px;
+    color: #ccc;font-size: 24px;
 }
 .desc_wrap{
     padding-left:65px ;
@@ -96,13 +97,13 @@
     background: #000;
 }
 .ren{
-    font-size: 14px;color:#333333
+    font-size: 14px;color:#666;
 }
 .time{
-    font-size: 14px;color:#999
+    font-size: 13px;color:#999
 }
 .desc{
-    font-size:14px;color:#666;line-height: 25px;margin-top:8px;word-break: break-all;
+    font-size:14px;color:#000;line-height: 25px;word-break: break-all;
 }
 .comment_input textarea{
     width: 100%;border-radius: 3px;border: 1px solid #ccc;padding: 10px;box-sizing: border-box;height: 100px;outline: none;

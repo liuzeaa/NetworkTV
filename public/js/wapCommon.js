@@ -1,6 +1,4 @@
-var  host = 'http://localhost:3000';
-var  vServer = 'rtmp://58.117.151.231/live&autoPlay=true';
-var  vIosurl = 'http://58.117.151.231/live/myStream/playlist.m3u8';
+﻿var  host = 'http://58.117.151.230';
 var socket = io.connect();
 $(function(){
     var nickName = Cookies.get('nickName')
