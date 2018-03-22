@@ -1,6 +1,5 @@
+var  host = 'http://58.117.151.230'
 
-var  host = 'http://localhost';//http://58.117.151.230
-4
 var socket = io.connect();
 $(function(){
     var nickName = Cookies.get('nickName')
