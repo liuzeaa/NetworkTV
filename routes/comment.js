@@ -14,4 +14,5 @@ router.post('/list',function(req,res,next){
         res.send(list);
     });
 })
+router.post('/')
 module.exports = router;
