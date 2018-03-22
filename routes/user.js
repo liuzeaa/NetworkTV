@@ -108,7 +108,7 @@ router.post('/list', function(req, res, next) {
     let pageIndex = parseInt(req.body.pageIndex);
     let pageSize = parseInt(req.body.pageSize);
     let skip = (pageIndex-1)*pageSize;
-    let UserModel = User.find({isDelected:false,isAdmin:false,nickName:new RegExp(req.body.name)}).skip(skip).limit(pageSize);
+    let UserModel = User.find({isDelected:false,isAdmin:false,nickName:new RegExp(req.body.nickName),name:new RegExp(req.body.name)}).skip(skip).limit(pageSize);
     User.find({isDelected:false,isAdmin:false},function(err,list){
         if(err){
             res.send(err.message);

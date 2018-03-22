@@ -33,16 +33,23 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res, next) {
-    res.render('web/login',{title:'登录'});
+    var deviceAgent = req.headers["user-agent"].toLowerCase();
+    var agentID = deviceAgent.match(/(iphone|ipod|ipad|android)/);
+    if(agentID){
+        res.render('wap/login',{title:'登录'});
+    }else{
+        res.render('web/login',{title:'登录'});
+    }
 });
-app.get('/m/login', function(req, res, next) {
-    res.render('wap/login',{title:'登录'});
-});
-app.get('/m/video', function(req, res, next) {
-    res.render('wap/video',{title:'在线直播'});
-});
+
 app.get('/video', function(req, res, next) {
-    res.render('web/video',{title:'在线直播'});
+    var deviceAgent = req.headers["user-agent"].toLowerCase();
+    var agentID = deviceAgent.match(/(iphone|ipod|ipad|android)/);
+    if(agentID){
+        res.render('wap/video',{title:'在线直播'});
+    }else{
+        res.render('web/video',{title:'在线直播'});
+    }
 });
 app.get('/user', function(req, res, next) {
     res.render('web/user',{title:'用户管理'});
@@ -50,7 +57,6 @@ app.get('/user', function(req, res, next) {
 
 app.use('/user', user);
 app.use('/comment', comment);
-
 server.listen(80);
 // 在线用户
 var onlineUsers = {};

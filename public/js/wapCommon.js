@@ -1,5 +1,5 @@
 ﻿
-﻿var  host = 'http://58.117.151.230';
+var  host = 'http://localhost';//http://58.117.151.230
 
 var socket = io.connect();
 $(function(){
@@ -20,7 +20,7 @@ $(function(){
             success:function(result) {
                 if (result.status == 0){
                     socket.disconnect();
-                    location.href = '/m/login'
+                    location.href = '/'
                 }
             }
         })
@@ -37,19 +37,19 @@ function checkLogin(){
         data:{},
         success:function(result){
             if(result.status=='2'){
-                if(location.href==host+'/m/login'){
+                if(location.href==host+'/'){
                     return;
                 }
-                location.href='/m/login'
+                location.href='/'
             }else{
                 if(result.result.isAdmin=='true'){
                     alert('管理员请使用pc端进行添加用户！');
                     return;
                 }else{
-                    if(location.href==host+'/m/video'){
+                    if(location.href==host+'/video'){
                         return;
                     }
-                    location.href='/m/video'
+                    location.href='/video'
                 }
             }
         }
