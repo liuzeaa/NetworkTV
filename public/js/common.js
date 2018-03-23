@@ -1,4 +1,4 @@
-var  host = 'http://localhost'
+var  host = 'http://58.117.151.230'
 
 var socket = io.connect();
 $(function(){

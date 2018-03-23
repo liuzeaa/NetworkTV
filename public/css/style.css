@@ -78,7 +78,13 @@ body{font-family:microsoft yahei,heiti;}
     overflow: auto;flex: 1;
 }
 .comment_input{
-    flex: 0 0 160px;
+    flex: 0 0 64px;display: flex;padding:15px 0px;
+}
+.comment_input #content{
+    flex:1;margin-right: 15px;
+}
+.comment_input #submit{
+    flex:0 0 82px;height: 34px;
 }
 .comment_wrap li{
     padding: 6px 0px;border-bottom: 1px solid #ccc;list-style: none;min-height: 50px;position: relative;min-height: 50px;

@@ -76,8 +76,10 @@
                             </ul>
                         </div>
                         <div class="comment_input">
-                            <textarea placeholder="一起来分享下学习心得吧！" id="content" ></textarea>
-                            <button class="btn btn-primary pull-right" style="margin: 15px 0" id="submit">发起评论</button>
+                            <input placeholder="一起来分享下学习心得吧！" id="content" class="form-control"/>
+                            <button class="btn btn-primary" type="button"  id="submit">
+                                发起评论
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -166,7 +168,12 @@
                 userId:userid,
                 content:$('#content').val().trim()
             })
-
+        })
+        $('#content').keydown(function (e) {
+            e = e || window.event;
+            if ((e.keyCode || e.which) == "13") {
+                $("#submit").click();
+            }
         })
     })
    function getList(){
