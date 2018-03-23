@@ -1,10 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var commentSchema = Schema({
-    userId:{
-        type:Schema.Types.ObjectId,
-        ref:"User"
-    },
+    nickName:String,
     content:String,
     createdAt: {type: Date, default: Date.now },
     updatedAt:Date,

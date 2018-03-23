@@ -109,24 +109,11 @@ io.on('connection', function(socket) {
                 console.log(err);
                 return;
             }
-            if(data!==null){
-                User.findOne({
-                    _id:obj.userId,
-                    isDelected:false
-                },function(err,doc){
-                    if(err){
-                        console.log(err);
-                        return;
-                    }
-                    if(doc!=null){
-                        io.emit('message', {
-                            nickName:doc.nickName,
-                            content:obj.content,
-                            createdAt:new Date()
-                        });
-                    }
-                })
-            }
+            io.emit('message', {
+                nickName:obj.nickName,
+                content:obj.content,
+                createdAt:new Date()
+            });
         })
     });
 })

@@ -235,7 +235,7 @@
 </script>
 <script id="table_item" type="text/x-jquery-tmpl">
     <tr>
-        <td>${userId.nickName}</td>
+        <td>${nickName}</td>
         <td>${content}</td>
         <td>${moment(createdAt).format('YYYY-MM-DD HH:mm:ss')}</td>
     </tr>
@@ -267,6 +267,10 @@
             e.preventDefault();
             var $form = $(e.target);
             var bv = $form.data('bootstrapValidator');
+            if($('#startDate').val()<$('#endDate').val()){
+                layer.msg('结束时间不能大于开始时间')
+                return;
+            }
             $.ajax({
                 url:host+'/comment/export',
                 type:'POST',

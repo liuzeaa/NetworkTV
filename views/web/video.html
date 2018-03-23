@@ -106,19 +106,6 @@
         <i class="iconfont icon-yonghu"></i>
         <div class="desc_wrap">
             <div class="clearfix">
-            <span class="ren pull-left">${userId.nickName}</span>
-            <span class="time pull-right">${moment(createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
-        </div>
-        <div class="desc">
-            ${content}
-        </div>
-    </li>
-</script>
-<script id="chat_item1" type="text/x-jquery-tmpl">
-    <li>
-        <i class="iconfont icon-yonghu"></i>
-        <div class="desc_wrap">
-            <div class="clearfix">
             <span class="ren pull-left">${nickName}</span>
             <span class="time pull-right">${moment(createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
         </div>
@@ -127,6 +114,7 @@
         </div>
     </li>
 </script>
+
 <script>
     $(function(){
         var userId = Cookies.get('userId');
@@ -143,8 +131,7 @@
             $('#onlinecount').html('在线人数：'+data.onlineCount);
         })
         socket.on('message',function(data){
-            console.log(data)
-            $('#chat_item1').tmpl(data).appendTo('#chat_list');
+            $('#chat_item').tmpl(data).appendTo('#chat_list');
             scrollIntoView('#chat_list');
             $('#content').val('');
         })
@@ -165,7 +152,7 @@
             }
 
             socket.emit('message',{
-                userId:userid,
+                nickName:nickname,
                 content:$('#content').val().trim()
             })
         })

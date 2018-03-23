@@ -96,7 +96,7 @@
                 return
             }
             socket.emit('message',{
-                userId:userid,
+                nickName:nickname,
                 content:$('#content').val().trim()
             })
 
@@ -117,7 +117,7 @@
                             '                    <i class="iconfont icon-yonghu"></i>\n' +
                             '                    <div class="desc_wrap">\n' +
                             '                        <div style="overflow: hidden">\n' +
-                            '                            <span class="ren">'+item.userId.nickName+'</span>\n' +
+                            '                            <span class="ren">'+item.nickName+'</span>\n' +
                             '                            <span class="time">'+moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss')+'</span>\n' +
                             '                        </div>\n' +
                             '                        <div class="desc">'+item.content+'</div>\n' +
