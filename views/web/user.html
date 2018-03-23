@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/fonts/iconfont.css">
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-datepicker3.min.css">
 </head>
 <body>
 <section class="page">
@@ -87,8 +87,8 @@
 <script src="/js/bootstrapValidator.min.js"></script>
 <script src="/js/layer/layer.js"></script>
 <script src="/js/moment.min.js"></script>
-<script src="/js/bootstrap-datetimepicker.min.js"></script>
-<script src="/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="/js/bootstrap-datepicker.min.js"></script>
+<script src="/js/bootstrap-datepicker.zh-CN.min.js"></script>
 <link rel="stylesheet" href="/js/tableexport/dist/css/tableexport.min.css">
 <script src="/js/tableexport/js/xlsx.core.min.js"></script>
 <script src="/js/tableexport/js/blob.js"></script>
@@ -191,15 +191,9 @@
             <form class="form-horizontal" method="post" id="export_form">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label class="col-md-3 control-label" for="password" >开始时间</label>
+                        <label class="col-md-3 control-label" for="password" >时间</label>
                         <div class="col-md-6">
-                            <input  type="text"  class="form-control" id="startDate" name="startDate" placeholder="请选择开始时间">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label" for="password">结束时间</label>
-                        <div class="col-md-6">
-                            <input  type="text"  class="form-control" id="endDate" name="endDate" placeholder="请选择结束时间">
+                            <input  type="text"  class="form-control" id="Date" name="Date" placeholder="请选择时间">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -243,41 +237,35 @@
 <script type="text/javascript">
     $(function(){
         getList(1,10);
-        $("#startDate,#endDate").datetimepicker({format: 'yyyy-mm-dd hh:ii',language:  'zh-CN'}).on('changeDate', function (ev) {
-            $(this).datetimepicker('hide');
+        $("#Date").datepicker({
+            language: "zh-CN",
+            todayHighlight: !0,
+            orientation: "bottom left",
+            format: "yyyy-mm-dd"
+        }).on('changeDate', function (ev) {
+            $(this).datepicker('hide');
         });
         $('#export_form').bootstrapValidator({
             fields:{
-                startDate:{
+                Date:{
                     validators: {
                         notEmpty: {//非空验证：提示消息
-                            message: '开始时间不能为空'
+                            message: '时间不能为空'
                         }
                     }
                 },
-                endDate:{
-                    validators: {
-                        notEmpty: {
-                            message: '结束时间不能为空'
-                        }
-                    }
-                }
             }
         }).on('success.form.bv', function(e) {//点击提交之后
             e.preventDefault();
             var $form = $(e.target);
             var bv = $form.data('bootstrapValidator');
-            if($('#startDate').val()<$('#endDate').val()){
-                layer.msg('结束时间不能大于开始时间')
-                return;
-            }
+
             $.ajax({
                 url:host+'/comment/export',
                 type:'POST',
                 dataType:'json',
                 data:{
-                    startDate:$('#startDate').val(),
-                    endDate:$('#endDate').val()
+                    Date:$('#Date').val()
                 },
                 success:function(result){
                     $('#table_item').tmpl(result).appendTo('#table_list');

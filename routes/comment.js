@@ -15,7 +15,7 @@ router.post('/list',function(req,res,next){
     });
 })
 router.post('/export',function(req,res,next){
-    var startDate = new Date(req.body.startDate),endDate = new Date(req.body.endDate);
+    var startDate = new Date(req.body.Date),endDate = new Date(new Date(req.body.Date).getTime()+1000*60*60*24);
     Comment.find({isDelected:false,createdAt:{$gte:startDate,$lte:endDate}}).exec(function(err,list){
         if(err){
             res.send(err.message);
