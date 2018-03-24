@@ -73,7 +73,7 @@
         </div>
     </section>
     <footer class="footer">
-        <div>版权所有：北京第二实验小永定分校  京ICP备15007511号  京公网安备11010902000289号</div>
+        <div>版权所有：北京第二实验小学永定分校  京ICP备15007511号  京公网安备11010902000289号</div>
     </footer>
 </section>
 <script src="/js/jquery.min.js"></script>
@@ -261,7 +261,7 @@
             var bv = $form.data('bootstrapValidator');
 
             $.ajax({
-                url:host+'/comment/export',
+                url:'/comment/export',
                 type:'POST',
                 dataType:'json',
                 data:{
@@ -296,7 +296,7 @@
             var $form = $(e.target);
             var bv = $form.data('bootstrapValidator');
             $.ajax({
-                url:host+'/user/create',
+                url:'/user/create',
                 type:'POST',
                 dataType:'json',
                 xhrFields: {
@@ -318,7 +318,7 @@
     })
     function getList(pageIndex,pageSize){
         $.ajax({
-            url:host+'/user/list',
+            url:'/user/list',
             type:'POST',
             dataType:'json',
             xhrFields: {
@@ -365,7 +365,7 @@
             var $form = $(e.target);
             var bv = $form.data('bootstrapValidator');
             $.ajax({
-                url:host+'/user/edit/'+id,
+                url:'/user/edit/'+id,
                 type:'POST',
                 dataType:'json',
                 xhrFields: {
@@ -388,7 +388,7 @@
             title: '操作'
         },function(index){
             $.ajax({
-                url:host+'/user/delete/'+id,
+                url:'/user/delete/'+id,
                 type:'POST',
                 dataType:'json',
                 xhrFields: {

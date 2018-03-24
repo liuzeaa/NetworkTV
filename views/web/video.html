@@ -87,7 +87,7 @@
         </div>
     </section>
     <footer class="footer">
-        <div>版权所有：北京第二实验小永定分校  京ICP备15007511号  京公网安备11010902000289号 <span style="margin-left: 40px" id="onlinecount"></span></div>
+        <div>版权所有：北京第二实验小学永定分校  京ICP备15007511号  京公网安备11010902000289号 <span style="margin-left: 40px" id="onlinecount"></span></div>
     </footer>
 </section>
 <script src="/js/jquery.min.js"></script>
@@ -139,11 +139,11 @@
             width: 120,
             height: 120
         });
-        qrcode.makeCode(host+'/');
+        qrcode.makeCode('http://'+location.hostname+'/');
         getList();
 
         $('#submit').click(function(){
-            if(userId==null){
+            if(nickname==null){
                 return
             }
             if($('#content').val().trim()==''){
@@ -165,7 +165,7 @@
     })
    function getList(){
         $.ajax({
-            url:host+'/comment/list',
+            url:'/comment/list',
             type:'POST',
             dataType:'json',
             xhrFields: {

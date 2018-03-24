@@ -1,5 +1,4 @@
-﻿var  host = 'http://58.117.151.230'
-var socket = io.connect();
+﻿var socket = io.connect();
 $(function(){
     var nickName = Cookies.get('nickName')
     if(nickName!=null){
@@ -8,7 +7,7 @@ $(function(){
     checkLogin();
     $('#logout').click(function(){
         $.ajax({
-            url:host+'/user/logout',
+            url:'/user/logout',
             type:'POST',
             dataType:'json',
             xhrFields: {
@@ -26,7 +25,7 @@ $(function(){
 })
 function checkLogin(){
     $.ajax({
-        url:host+'/user/checkLogin',
+        url:'/user/checkLogin',
         type:'POST',
         dataType:'json',
         xhrFields: {
@@ -35,7 +34,7 @@ function checkLogin(){
         data:{},
         success:function(result){
             if(result.status=='2'){
-                if(location.href==host+'/'){
+                if(location.href=='http://'+location.hostname+'/'){
                     return;
                 }
                 location.href='/'
@@ -44,7 +43,7 @@ function checkLogin(){
                     alert('管理员请使用pc端进行添加用户！');
                     return;
                 }else{
-                    if(location.href==host+'/video'){
+                    if(location.href=='http://'+location.hostname+'/video'){
                         return;
                     }
                     location.href='/video'

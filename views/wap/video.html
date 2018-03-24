@@ -85,10 +85,8 @@
             $('#content').val('');
         })
         getList();
-        var userId = Cookies.get('userId');
-        var userid = userId.slice(3,userId.length-1);
         $('#submit').on('click',function(){
-            if(userId==null){
+            if(nickname==null){
                 return
             }
             if($('#content').val().trim()==''){
@@ -104,7 +102,7 @@
     })
     function getList(){
         $.ajax({
-            url:host+'/comment/list',
+            url:'/comment/list',
             type:'POST',
             dataType:'json',
             xhrFields: {

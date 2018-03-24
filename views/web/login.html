@@ -48,7 +48,7 @@
         </div>
     </section>
     <footer class="footer">
-        <div>版权所有：北京第二实验小永定分校  京ICP备15007511号  京公网安备11010902000289号</div>
+        <div>版权所有：北京第二实验小学永定分校  京ICP备15007511号  京公网安备11010902000289号</div>
     </footer>
 </section>
 <script src="/js/jquery.min.js"></script>
@@ -86,7 +86,7 @@
             var $form = $(e.target);
             var bv = $form.data('bootstrapValidator');
             $.ajax({
-                url:host+'/user/login',
+                url:'/user/login',
                 type:'POST',
                 dataType:'json',
                 xhrFields: {
