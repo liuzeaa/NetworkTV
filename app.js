@@ -33,24 +33,29 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res, next) {
-    var deviceAgent = req.headers["user-agent"].toLowerCase();
-    var agentID = deviceAgent.match(/(iphone|ipod|ipad|android)/);
-    if(agentID){
+    isMobile(req,function(){
         res.render('wap/login',{title:'登录'});
-    }else{
+    },function(){
         res.render('web/login',{title:'登录'});
-    }
+    })
 });
 
 app.get('/video', function(req, res, next) {
+    isMobile(req,function(){
+        res.render('wap/video',{title:'在线直播'});
+    },function(){
+        res.render('web/video',{title:'在线直播'});
+    })
+});
+function isMobile(req,mobileCb,pcCb){
     var deviceAgent = req.headers["user-agent"].toLowerCase();
     var agentID = deviceAgent.match(/(iphone|ipod|ipad|android)/);
     if(agentID){
-        res.render('wap/video',{title:'在线直播'});
+        mobileCb()
     }else{
-        res.render('web/video',{title:'在线直播'});
+        pcCb();
     }
-});
+}
 app.get('/user', function(req, res, next) {
     res.render('web/user',{title:'用户管理'});
 });
