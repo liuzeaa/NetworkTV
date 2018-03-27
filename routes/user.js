@@ -193,7 +193,9 @@ router.post('/edit/:id',function(req,res,next){
     })
 })
 router.post("/delete/:id",function(req,res,next){
-    User.remove({_id:req.params.id},function(err,doc){
+    User.update({_id:req.params.id},{
+        isDelected:true
+    },function(err,doc){
         if(err){
             res.send(err.message);
             return;
