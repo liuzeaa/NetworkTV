@@ -61,9 +61,6 @@
 <script>
     $(function(){
         init()
-        socket.on('login',function(data){
-            console.log(data)
-        })
         $('#login_form').bootstrapValidator({
             fields:{
                 name:{
@@ -97,6 +94,7 @@
                     password:$('#password').val().trim()
                 },
                 success:function(result){
+                    debugger;
                     if(result.status==1){
                         alert(result.msg);
                         return
@@ -118,7 +116,7 @@
                     }
                 },
                 error:function(){
-                   alet('服务端错误')
+                   alert('服务端错误')
                 }
             })
 

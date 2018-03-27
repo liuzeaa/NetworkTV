@@ -60,16 +60,26 @@
 </section>
 
 <script>
+    var socket = io.connect();
     $(function(){
-        var userId = Cookies.get('userId');
-        var userName = Cookies.get('userName');
         var nickname = Cookies.get('nickName');
-        var userid = userId.slice(3,userId.length-1);
-        socket.emit('login',{
-            userid:userid,
-            username:userName,
-            nickname:nickname
-        });
+        $('#logout').click(function(){
+            $.ajax({
+                url:'/user/logout',
+                type:'POST',
+                dataType:'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                data:{},
+                success:function(result) {
+                    if (result.status == 0){
+                        socket.disconnect();
+                        location.href = '/'
+                    }
+                }
+            })
+        })
         socket.on('message',function(data){
             $('#chat_list').append('<li>\n' +
                 '                    <i class="iconfont icon-yonghu"></i>\n' +

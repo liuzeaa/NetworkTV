@@ -1,27 +1,9 @@
-var socket = io.connect();
 $(function(){
     var nickName = Cookies.get('nickName')
     if(nickName!=null){
         $('#nicheng').html(nickName);
     }
     checkLogin();
-    $('#logout').click(function(){
-        $.ajax({
-            url:'/user/logout',
-            type:'POST',
-            dataType:'json',
-            xhrFields: {
-                withCredentials: true
-            },
-            data:{},
-            success:function(result) {
-                if (result.status == 0){
-                    socket.disconnect();
-                    location.href = '/'
-                }
-            }
-        })
-    })
 })
 function checkLogin(){
     $.ajax({
