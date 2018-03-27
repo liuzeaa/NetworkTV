@@ -212,12 +212,27 @@
     </tr>
 </script>
 <script type="text/javascript">
-
     $(function(){
         var userId = Cookies.get('userId');
         var userid = userId.slice(3,userId.length-1);
         $('#editPwd').click(function(){
             edit(userid);
+        })
+        $('#logout').click(function(){
+            $.ajax({
+                url:'/user/logout',
+                type:'POST',
+                dataType:'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                data:{},
+                success:function(result) {
+                    if (result.status == 0){
+                        location.href = '/'
+                    }
+                }
+            })
         })
         getList(1,10);
         $('#removeComment').click(function(){
