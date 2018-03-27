@@ -15,6 +15,7 @@ router.post('/login',function(req,res,next){
     var userPwd = req.body.password;
     var md5 = crypto.createHash("md5");
     var newPas = md5.update(userPwd).digest("hex");
+
     User.findOne({name:userName,isDelected:false},function(err,doc) {
         if (err) {
             res.send(err.message);
@@ -108,25 +109,23 @@ router.post('/list', function(req, res, next) {
     let pageIndex = parseInt(req.body.pageIndex);
     let pageSize = parseInt(req.body.pageSize);
     let skip = (pageIndex-1)*pageSize;
-    let UserModel = User.find({isDelected:false,isAdmin:false,nickName:new RegExp(req.body.nickName),name:new RegExp(req.body.name)}).skip(skip).limit(pageSize);
-    User.find({isDelected:false,isAdmin:false},function(err,list){
+    let UserModel = User.find({isDelected:false,isAdmin:false,nickName:new RegExp(req.body.nickName),name:new RegExp(req.body.name)});
+    UserModel.exec(function (err, list) {
         if(err){
             res.send(err.message);
             return;
         }
-        UserModel.exec(function (err, list2) {
+        UserModel.skip(skip).limit(pageSize).exec(function (err, list2) {
             if(err){
                 res.send(err.message);
                 return;
             }
-
             res.json({
                 totalCount:list.length,
                 data:list2
             })
         })
     })
-
 });
 //新增用户
 router.post('/create',function(req, res, next){
@@ -194,9 +193,7 @@ router.post('/edit/:id',function(req,res,next){
     })
 })
 router.post("/delete/:id",function(req,res,next){
-    User.update({_id:req.params.id},{
-        $set:{isDelected:true}
-    },function(err,doc){
+    User.remove({_id:req.params.id},function(err,doc){
         if(err){
             res.send(err.message);
             return;

@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/fonts/iconfont.css">
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/bootstrap-datepicker3.min.css">
 </head>
 <body>
 <section class="page">
@@ -21,6 +20,8 @@
             <div class="login_info pull-right clearfix">
                 <i class="iconfont icon-yonghu pull-left"></i>
                 <span class="pull-left" id="nicheng"></span>
+                <b class="pull-left"></b>
+                <a class="pull-left" href="javsacript:;" id="editPwd">修改密码</a>
                 <b class="pull-left"></b>
                 <a class="pull-left" href="javsacript:;" id="logout">退出登录</a>
             </div>
@@ -51,7 +52,8 @@
                                 </div>
                                 <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#createModal">增加用户</button>
                                 <button class="btn btn-primary pull-right" data-toggle="modal" style="margin-right:10px;" data-target="#importModal">导入用户</button>
-                                <button class="btn btn-primary pull-right" data-toggle="modal" style="margin-right:10px;" data-target="#exportModal">导出评论</button>
+                                <button class="btn btn-primary pull-right" style="margin-right:10px;" id="removeComment">清除评论</button>
+                                <button class="btn btn-primary pull-right" style="margin-right:10px;" id="exportComment">导出评论</button>
                             </div>
                             <table class="table-hover table-bordered table" style="margin-top: 15px">
                                 <thead>
@@ -65,7 +67,7 @@
 
                                 </tbody>
                             </table>
-                            <div id="page" style="text-align: center"></div>
+                            <div id="page" style="text-align: center;"></div>
                         </div>
                     </div>
                 </div>
@@ -75,6 +77,18 @@
     <footer class="footer">
         <div>版权所有：北京第二实验小学永定分校  京ICP备15007511号  京公网安备11010902000289号</div>
     </footer>
+    <table id="table" style="display: none">
+        <thead>
+        <tr>
+            <th>姓名</th>
+            <th>评论内容</th>
+            <th>时间</th>
+        </tr>
+        </thead>
+        <tbody id="table_list">
+
+        </tbody>
+    </table>
 </section>
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
@@ -87,8 +101,7 @@
 <script src="/js/bootstrapValidator.min.js"></script>
 <script src="/js/layer/layer.js"></script>
 <script src="/js/moment.min.js"></script>
-<script src="/js/bootstrap-datepicker.min.js"></script>
-<script src="/js/bootstrap-datepicker.zh-CN.min.js"></script>
+
 <link rel="stylesheet" href="/js/tableexport/dist/css/tableexport.min.css">
 <script src="/js/tableexport/js/xlsx.core.min.js"></script>
 <script src="/js/tableexport/js/blob.js"></script>
@@ -180,43 +193,7 @@
         </div>
     </div>
 </div>
-<!-- 导出评论 -->
-<div class="modal fade" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">导出评论</h4>
-            </div>
-            <form class="form-horizontal" method="post" id="export_form">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label class="col-md-3 control-label" for="password" >时间</label>
-                        <div class="col-md-6">
-                            <input  type="text"  class="form-control" id="Date" name="Date" placeholder="请选择时间">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="submit" class="btn btn-primary">确定</button>
-                    </div>
-                </div>
-            </form>
-            <table id="table" style="display: none">
-                <thead>
-                <tr>
-                    <th>姓名</th>
-                    <th>评论内容</th>
-                    <th>时间</th>
-                </tr>
-                </thead>
-                <tbody id="table_list">
 
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
 <script id="item" type="text/x-jquery-tmpl">
     <tr>
         <td>${nickName}</td>
@@ -235,45 +212,38 @@
     </tr>
 </script>
 <script type="text/javascript">
-    $(function(){
-        getList(1,10);
-        $("#Date").datepicker({
-            language: "zh-CN",
-            todayHighlight: !0,
-            orientation: "bottom left",
-            format: "yyyy-mm-dd"
-        }).on('changeDate', function (ev) {
-            $(this).datepicker('hide');
-        });
-        $('#export_form').bootstrapValidator({
-            fields:{
-                Date:{
-                    validators: {
-                        notEmpty: {//非空验证：提示消息
-                            message: '时间不能为空'
-                        }
-                    }
-                },
-            }
-        }).on('success.form.bv', function(e) {//点击提交之后
-            e.preventDefault();
-            var $form = $(e.target);
-            var bv = $form.data('bootstrapValidator');
 
+    $(function(){
+        var userId = Cookies.get('userId');
+        var userid = userId.slice(3,userId.length-1);
+        $('#editPwd').click(function(){
+            edit(userid);
+        })
+        getList(1,10);
+        $('#removeComment').click(function(){
+            $.ajax({
+                url:'/comment/remove',
+                type:'POST',
+                dataType:'json',
+                data:{},
+                success:function(result){
+                    layer.msg('清除成功');
+                }
+            })
+        })
+        $('#exportComment').click(function(){
             $.ajax({
                 url:'/comment/export',
                 type:'POST',
                 dataType:'json',
-                data:{
-                    Date:$('#Date').val()
-                },
+                data:{},
                 success:function(result){
                     $('#table_item').tmpl(result).appendTo('#table_list');
-                    $("#table").tableExport({ formats: ["xlsx"], bootstrap: false, fileName: '评论列表'+$('#Date').val() });
+                    $("#table").tableExport({ formats: ["xlsx"], bootstrap: false, fileName: '评论列表'+moment(new Date()).format('YYYY-MM-DD HH:mm:ss') });
                     $("button[data-fileblob]").trigger("click");
                 }
             })
-        });
+        })
         $('#create_form').bootstrapValidator({
             fields:{
                 nickName:{
@@ -331,6 +301,7 @@
                 name:$('#searchName1').val().trim()
             },
             success:function(result){
+                console.log(result)
                 $("#list").empty();
                 $("#item").tmpl(result.data).appendTo("#list");
                 laypage({
@@ -377,6 +348,7 @@
                 success:function(result){
                     getList(1,10);
                     $('#editModal').modal('hide');
+                    layer.msg('修改成功');
                     $('#password').val('')
                 }
             })
