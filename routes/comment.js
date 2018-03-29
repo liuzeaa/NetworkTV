@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var Comment = require('../schemas/comment');
 var User = require('../schemas/user');
-
 //获取评论列表
 router.post('/list',function(req,res,next){
     var date = new Date(new Date().setHours(0, 0, 0, 0));
