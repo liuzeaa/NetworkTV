@@ -24,7 +24,11 @@ router.post('/export',function(req,res,next){
     });
 })
 router.post('/remove',function(req,res,next){
-    Comment.remove({},function(err,doc){
+    Comment.update({isDelected:false},{
+        $set:{
+            isDelected:true
+        }
+    },function(err,doc){
         if(err){
             res.send(err.message);
             return;
