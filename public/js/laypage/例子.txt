@@ -1,0 +1,15 @@
+﻿
+  //makePageBar(getData, document.getElementById("pageBar"), json.result.retData.PageIndex, json.result.retData.PageCount, $("#PageNumber").val(), json.result.retData.RowCount);
+  laypage({
+    cont: 'pageBar', //容器。值支持id名、原生dom对象，jquery对象。【如该容器为】：<div id="page1"></div>
+    pages: json.result.retData.PageCount, //通过后台拿到的总页数
+    curr: json.result.retData.PageIndex || 1, //当前页
+    skip: false, //是否开启跳页
+    skin: '#007cdb',
+    jump: function (obj, first) { //触发分页后的回调
+      if (!first) { //点击跳页触发函数自身，并传递当前页：obj.curr
+        getDate(obj.curr, pageSize)
+      }
+    }
+  });
+

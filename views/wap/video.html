@@ -1,0 +1,148 @@
+﻿<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/fonts/iconfont.css">
+    <link rel="stylesheet" href="/css/wap.css">
+    <script src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/action.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/moment.min.js"></script>
+    <script src="/js/wapCommon.js"></script>
+    <script src="/js/js.cookie.min.js"></script>
+</head>
+<body>
+<section class="page">
+    <section class="content" >
+        <div class="video_wrap">
+            <div class="close_light_bg" id="close_light_bg"></div>
+            <div class="video flex1" id="CuPlayer" >
+                <SCRIPT LANGUAGE=JavaScript>
+                    var vID        = "";
+                    var vWidth     = "100%";
+                    var vHeight    = "100%";
+                    var vFile      = "/img/CuSunV2setLive.xml";
+                    var vPlayer    = "/img/player.swf?v=2.5";
+                    var vPic       = "/img/htgd.jpg";
+                    var vCssurl    = "/css/mini.css";
+                    //PC端
+                    var vServer    = "rtmp://58.117.151.231:1935/live&autoPlay=true";
+                    var vMp4url    = "myStream";
+                    //安卓端,iOS端,wp
+                    var vIosurl    = "http://58.117.151.231:1935/live/myStream/playlist.m3u8";
+
+                </SCRIPT>
+                <script class="CuPlayerVideo" data-mce-role="CuPlayerVideo" type="text/javascript" src="/js/CuSunL2.min.js"></script>
+            </div>
+        </div>
+        <div class="chat_wrap">
+            <div class="title">
+                    <span>
+                        <i class="iconfont icon-taolun"></i>
+                        讨论版块
+                    </span>
+                <div style="float:right">
+                    <span id="nicheng"></span>
+                    <b>|</b>
+                    <span id="logout">退出登录</span>
+                </div>
+            </div>
+            <ul class="chat_list" id="chat_list">
+
+            </ul>
+        </div>
+    </section>
+    <footer class="footer">
+        <input type="text" class="input_control" placeholder="一起来分享学习心得吧！" id="content" />
+        <button class="btn" id="submit">发起评论</button>
+    </footer>
+</section>
+
+<script>
+    var socket = io.connect();
+    $(function(){
+        var nickname = Cookies.get('nickName');
+        $('#logout').click(function(){
+            $.ajax({
+                url:'/user/logout',
+                type:'POST',
+                dataType:'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                data:{},
+                success:function(result) {
+                    if (result.status == 0){
+                        socket.disconnect();
+                        location.href = '/'
+                    }
+                }
+            })
+        })
+        socket.on('message',function(data){
+            $('#chat_list').append('<li>\n' +
+                '                    <i class="iconfont icon-yonghu"></i>\n' +
+                '                    <div class="desc_wrap">\n' +
+                '                        <div style="overflow: hidden">\n' +
+                '                            <span class="ren">'+data.nickName+'</span>\n' +
+                '                            <span class="time">'+moment(data.createdAt).format('YYYY-MM-DD HH:mm:ss')+'</span>\n' +
+                '                        </div>\n' +
+                '                        <div class="desc">'+data.content+'</div>\n' +
+                '                    </div>\n' +
+                '                </li>');
+            scrollIntoView('#chat_list');
+            $('#content').val('');
+        })
+        getList();
+        $('#submit').on('click',function(){
+            if(nickname==null){
+                return
+            }
+            if($('#content').val().trim()==''){
+                alert('请输入内容');
+                return
+            }
+            socket.emit('message',{
+                nickName:nickname,
+                content:$('#content').val().trim()
+            })
+
+        })
+    })
+    function getList(){
+        $.ajax({
+            url:'/comment/list',
+            type:'POST',
+            dataType:'json',
+            xhrFields: {
+                withCredentials: true
+            },
+            success:function(res){
+                if(res.length>0){
+                    res.forEach(function(item){
+                        $('#chat_list').append('<li>\n' +
+                            '                    <i class="iconfont icon-yonghu"></i>\n' +
+                            '                    <div class="desc_wrap">\n' +
+                            '                        <div style="overflow: hidden">\n' +
+                            '                            <span class="ren">'+item.nickName+'</span>\n' +
+                            '                            <span class="time">'+moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss')+'</span>\n' +
+                            '                        </div>\n' +
+                            '                        <div class="desc">'+item.content+'</div>\n' +
+                            '                    </div>\n' +
+                            '                </li>');
+                    })
+                    scrollIntoView('#chat_list')
+                }
+            }
+        })
+    }
+    //定位最后一条讨论内容
+    function scrollIntoView(obj) {
+        var $obj = $(obj).children().last(); //找到要定位的讨论内容
+        var objd = $obj[0]; //转化为dom对象
+        objd.scrollIntoView();
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+﻿<html>
+<head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/fonts/iconfont.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+<body>
+<section class="page">
+    <header class="header">
+        <div class="container-fluid pr">
+            <div class="logo" style="margin-left: 25px">
+                <img src="/img/logo.png"/>
+            </div>
+            <span class="sub pull-left">
+                雏鹰网络电视台
+            </span>
+            <div class="code_wrap pull-left clearfix">
+                <div class="pull-left zi">
+                    扫一扫手机<br/>看视频评论
+                </div>
+                <div class="code pull-left pr">
+                    <i class="iconfont icon-erweima"></i>
+                    <div class="code_img">
+                        <div class="qRcode" id="code"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="login_info pull-right clearfix">
+                <i class="iconfont icon-yonghu pull-left"></i>
+                <span class="pull-left" id="nicheng"></span>
+                <b class="pull-left"></b>
+                <a class="pull-left" href="javascript:;" id="logout">退出登录</a>
+            </div>
+        </div>
+    </header>
+    <section class="content pr">
+        <div class="container-fluid" style="position: absolute;height: 100%;width: 100%">
+            <div class="row h100">
+                <div class="h100">
+                    <div class="col-lg-9 h100 flex video_wrap">
+                        <div class="flex flex1">
+                            <div class="close_light_bg" id="close_light_bg"></div>
+                            <div class="video flex1 flex" id="CuPlayer" style="align-items: center;justify-content: center">
+                                <SCRIPT LANGUAGE=JavaScript>
+                                    var vID        = "";
+                                    var vWidth     = '100%';
+                                    var vHeight    = '100%';
+                                    var vFile      = "/img/CuSunV2setLive.xml";
+                                    var vPlayer    = "/img/player.swf?v=2.5";
+                                    var vPic       = "/img/htgd.jpg";
+                                    var vCssurl    = "/css/mini.css";
+                                    //PC端
+                                    var vServer    = "rtmp://58.117.151.231:1935/live&autoPlay=true";
+                                    var vMp4url    = "myStream";
+                                    //安卓端,iOS端,wp
+                                    var vIosurl    = "http://58.117.151.231:1935/live/myStream/playlist.m3u8";
+                                </SCRIPT>
+                                <script class="CuPlayerVideo" data-mce-role="CuPlayerVideo" type="text/javascript" src="/js/CuSunL2.min.js"></script>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 comment">
+                        <h3 class="title">
+                            <span>
+                                <i class="iconfont icon-taolun"></i>
+                                讨论版块
+                            </span>
+                        </h3>
+                        <div class="comment_wrap">
+                            <ul class="chat_list" id="chat_list">
+
+                            </ul>
+                        </div>
+                        <div class="comment_input">
+                            <input placeholder="一起来分享下学习心得吧！" id="content" class="form-control" style="padding-left: 10px;"/>
+                            <button class="btn btn-primary" type="button"  id="submit">
+                                发起评论
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+        <div>版权所有：北京第二实验小学永定分校  京ICP备15007511号  京公网安备11010902000289号 <span style="margin-left: 40px" id="onlinecount"></span></div>
+    </footer>
+</section>
+<script src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/action.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/js.cookie.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/qrcode.min.js"></script>
+<script src="/js/common.js"></script>
+<link href="/css/bootstrapValidator.min.css" rel="stylesheet">
+<script src="/js/bootstrapValidator.min.js"></script>
+<script src="/js/moment.min.js"></script>
+<script src="/js/jquery.tmpl.js"></script>
+<script id="chat_item" type="text/x-jquery-tmpl">
+    <li>
+        <i class="iconfont icon-yonghu"></i>
+        <div class="desc_wrap">
+            <div class="clearfix">
+            <span class="ren pull-left">${nickName}</span>
+            <span class="time pull-right">${moment(createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
+        </div>
+        <div class="desc">
+            ${content}
+        </div>
+    </li>
+</script>
+
+<script>
+    var socket = io.connect();
+    $(function(){
+        var nickname = Cookies.get('nickName');
+        $('#logout').click(function(){
+            $.ajax({
+                url:'/user/logout',
+                type:'POST',
+                dataType:'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                data:{},
+                success:function(result) {
+                    if (result.status == 0){
+                        socket.disconnect();
+                        location.href = '/'
+                    }
+                }
+            })
+        })
+        socket.on('login',function(data){
+            console.log(data);
+            $('#onlinecount').html('在线人数：'+data.onlineCount);
+        })
+        socket.on('message',function(data){
+            $('#chat_item').tmpl(data).appendTo('#chat_list');
+            scrollIntoView('#chat_list');
+            $('#content').val('');
+        })
+        var qrcode = new QRCode(document.getElementById("code"), {
+            width: 120,
+            height: 120
+        });
+        qrcode.makeCode('http://'+location.hostname+'/');
+        getList();
+
+        $('#submit').click(function(){
+            if(nickname==null){
+                return
+            }
+            if($('#content').val().trim()==''){
+                alert('请输入内容');
+                return
+            }
+
+            socket.emit('message',{
+                nickName:nickname,
+                content:$('#content').val().trim()
+            })
+        })
+        $('#content').keydown(function (e) {
+            e = e || window.event;
+            if ((e.keyCode || e.which) == "13") {
+                $("#submit").click();
+            }
+        })
+    })
+   function getList(){
+        $.ajax({
+            url:'/comment/list',
+            type:'POST',
+            dataType:'json',
+            xhrFields: {
+                withCredentials: true
+            },
+            success:function(res){
+                if(res.length>0){
+                    $('#chat_item').tmpl(res).appendTo('#chat_list');
+                    scrollIntoView('#chat_list')
+                }
+
+            }
+        })
+   }
+   //定位最后一条讨论内容
+   function scrollIntoView(obj) {
+       var $obj = $(obj).children().last(); //找到要定位的讨论内容
+       var objd = $obj[0]; //转化为dom对象
+       objd.scrollIntoView();
+   }
+
+</script>
+</body>
+</html>
