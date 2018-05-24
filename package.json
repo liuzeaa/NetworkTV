@@ -12,6 +12,7 @@
     "ejs": "~2.5.7",
     "ejsexcel": "^3.5.2",
     "express": "~4.15.5",
+    "file-stream-rotator": "^0.2.1",
     "formidable": "^1.2.0",
     "moment": "^2.21.0",
     "mongoose": "^5.0.9",
