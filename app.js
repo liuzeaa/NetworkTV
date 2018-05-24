@@ -33,7 +33,7 @@ fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
 // 日志分割流
 let accessLogStream = FileStreamRotator.getStream({
     date_format: 'YYYYMMDD',
-    filename: path.join(logDir, 'access-%DATE%.log'),
+    filename: path.join(logDirectory, 'access-%DATE%.log'),
     frequency: 'daily',
     verbose: false
 });
