@@ -341,18 +341,7 @@
             title: '操作'
         },function(index){
             deleteAry.forEach(function(item){
-                $.ajax({
-                url:'/user/delete/'+item,
-                type:'POST',
-                dataType:'json',
-                xhrFields: {
-                    withCredentials: true
-                },
-                success:function(result){
-                    getList(1,10);
-                    layer.close(index)
-                }
-            })
+                deleteUser(item,index)
             })
         },function () { })
     })
@@ -436,21 +425,23 @@
             btn: ['确定', '取消'],
             title: '操作'
         },function(index){
-            $.ajax({
-                url:'/user/delete/'+id,
-                type:'POST',
-                dataType:'json',
-                xhrFields: {
-                    withCredentials: true
-                },
-                success:function(result){
-                    getList(1,10);
-                    layer.close(index)
-                }
-            })
+            deleteUser(id,index)
         },function () { })
     }
-
+    function deleteUser(id,index){
+        $.ajax({
+            url:'/user/delete/'+id,
+            type:'POST',
+            dataType:'json',
+            xhrFields: {
+                withCredentials: true
+            },
+            success:function(result){
+                getList(1,10);
+                layer.close(index)
+            }
+        })
+    }
 </script>
 </body>
 </html>
