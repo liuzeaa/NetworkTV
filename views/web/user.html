@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/fonts/iconfont.css">
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+        input[type=checkbox]{
+            width:16px;height: 16px;
+        }
+    </style>
 </head>
 <body>
 <section class="page">
@@ -56,9 +61,13 @@
                                 <button class="btn btn-danger pull-right" style="margin-right:10px;" id="removeComment">清除评论</button>
                                 <button class="btn btn-primary pull-right" style="margin-right:10px;" id="exportComment">导出评论</button>
                             </div>
+                            <div class="clearfix" style="margin-top: 10px;">
+                                <button class="btn btn-danger"  id="AllDelete">批量删除</button>
+                            </div>
                             <table class="table-hover table-bordered table" style="margin-top: 15px">
                                 <thead>
                                 <tr>
+                                    <th style="width:30px;vertical-align: middle"><input type="checkbox"  class="checkAll"></th>
                                     <th>姓名</th>
                                     <th>用户名</th>
                                     <th>操作</th>
@@ -197,6 +206,7 @@
 
 <script id="item" type="text/x-jquery-tmpl">
     <tr>
+        <td style="width:30px;vertical-align: middle"><input type="checkbox"  class="checkSingle" value="${_id}"></td>
         <td>${nickName}</td>
         <td>${name}</td>
         <td>
@@ -213,6 +223,7 @@
     </tr>
 </script>
 <script type="text/javascript">
+    var deleteAry  = [];
     $(function(){
         var userId = Cookies.get('userId');
         var userid = userId.slice(3,userId.length-1);
@@ -307,6 +318,44 @@
                 }
             })
         });
+
+    $('.checkAll').click(function(){
+        if($(this).is(':checked')){
+            $('.checkSingle').prop('checked',true);
+            $('.checkSingle').each(function(index,item){
+                deleteAry.push($(item).val())
+            })
+        }else{
+            $('.checkSingle').prop('checked',false);
+            deleteAry = []
+        }
+    })
+
+    $('#AllDelete').click(function(){
+        if($('.table input[type=checkbox]:checked').length==0){
+            layer.msg('请勾选你要删除的用户')
+            return;
+        }
+        layer.confirm('您确定要删除这些用户吗？', {
+            btn: ['确定', '取消'],
+            title: '操作'
+        },function(index){
+            deleteAry.forEach(function(item){
+                $.ajax({
+                url:'/user/delete/'+item,
+                type:'POST',
+                dataType:'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                success:function(result){
+                    getList(1,10);
+                    layer.close(index)
+                }
+            })
+            })
+        },function () { })
+    })
     })
     function getList(pageIndex,pageSize){
         $.ajax({
@@ -323,7 +372,6 @@
                 name:$('#searchName1').val().trim()
             },
             success:function(result){
-                console.log(result)
                 $("#list").empty();
                 $("#item").tmpl(result.data).appendTo("#list");
                 laypage({
@@ -338,6 +386,13 @@
                         }
                     }
                 });
+                $('.checkSingle').click(function(){
+                    if($(this).is(':checked')){
+                        deleteAry.push($(this).val())
+                    }else{
+                        deleteAry.splice(deleteAry.indexOf($(this).val()),1)
+                    }
+                })
             }
         })
     }
@@ -395,6 +450,7 @@
             })
         },function () { })
     }
+
 </script>
 </body>
 </html>
