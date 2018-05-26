@@ -213,16 +213,26 @@ router.post('/import', upload.single('uploadfile'),function(req,res,next){
         var nickAry = [];
         workSheets.forEach((item,index)=>{
             var name = pinyin(item[0],{style:pinyin.STYLE_NORMAL}).join(',').replace(/\,/g,'');
+            var findAry = nickAry.filter(function(obj){
+                return new RegExp('^'+name).test(obj.name)
+            })
+            if(findAry.length>0){
+                findAry.forEach(function(a,i){
+                    name = findAry[0].name+(i+1)
+                })
+            }
             var md5 = crypto.createHash("md5");
             var newPas = md5.update(item[1]).digest("hex");
             nickAry.push({nickName:item[0],name:name,password:newPas});
         })
+
         User.find({isDelected:false,isAdmin:false},function(err,list){
             if(err){
                 res.send(err.message);
                 return;
             }
             var intersection = array_intersection(list,nickAry);
+
             for(var i = 0;i<intersection.length;i++){
                 User.remove({
                     nickName:intersection[i].nickName
@@ -277,4 +287,5 @@ function array_intersection(a, b) { // 交集
     }
     return array_remove_repeat(result);
 }
+
 module.exports = router;
