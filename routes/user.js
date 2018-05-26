@@ -130,19 +130,29 @@ router.post('/list', function(req, res, next) {
 //新增用户
 router.post('/create',function(req, res, next){
     var nickName = req.body.nickName;
-    console.log(nickName)
     var md5 = crypto.createHash("md5");
     var newPas = md5.update(req.body.password).digest("hex");
     var name = pinyin(req.body.nickName,{style:pinyin.STYLE_NORMAL}).join(',').replace(/\,/g,'');
-    User.findOne({
-        name:name
+    User.find({
+        name:new RegExp('^'+name),
+         isDelected:false
     },function(err,doc){
         if(err){
             res.send(err.message);
             return;
         }
-        console.log(doc)
-        if(doc){
+        User.create({
+            nickName:nickName,
+            name:name+doc.length,
+            password:newPas
+        },function(err,doc2){
+            if(err){
+                res.send(err.message);
+                return;
+            }
+           res.send(doc2)
+        })
+        /*if(doc){
             if(doc.isDelected){
                 User.update({_id:doc._id},{
                     $set:{
@@ -160,18 +170,8 @@ router.post('/create',function(req, res, next){
                 });
             }
         }else{
-            User.create({
-                nickName:nickName,
-                name:name,
-                password:newPas
-            },function(err,doc2){
-                if(err){
-                    res.send(err.message);
-                    return;
-                }
-               res.send(doc2)
-            })
-        }
+
+        }*/
     })
 })
 router.post('/edit/:id',function(req,res,next){
