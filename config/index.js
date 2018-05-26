@@ -1,6 +1,6 @@
 ﻿var mongoose = require("mongoose");
 
-mongoose.connect("mongodb://58.117.151.230:27017/NetworkTV");
+mongoose.connect("mongodb://127.0.0.1:27017/NetworkTV");
 
 var db = mongoose.connection;
 

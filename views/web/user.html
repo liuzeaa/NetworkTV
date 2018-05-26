@@ -236,16 +236,22 @@
             })
         })
         getList(1,10);
+
         $('#removeComment').click(function(){
-            $.ajax({
-                url:'/comment/remove',
-                type:'POST',
-                dataType:'json',
-                data:{},
-                success:function(result){
-                    layer.msg('清除成功');
-                }
-            })
+            layer.confirm('您确定要清除评论吗？', {
+                btn: ['确定', '取消'],
+                title: '操作'
+            },function(index){
+                $.ajax({
+                    url:'/comment/remove',
+                    type:'POST',
+                    dataType:'json',
+                    data:{},
+                    success:function(result){
+                        layer.msg('清除成功');
+                    }
+                })
+            },function () { })
         })
         $('#exportComment').click(function(){
             $.ajax({
@@ -371,7 +377,7 @@
         });
     }
     function remove(id){
-        layer.confirm('您确定要删除改用户吗？', {
+        layer.confirm('您确定要删除该用户吗？', {
             btn: ['确定', '取消'],
             title: '操作'
         },function(index){

@@ -1,11 +1,14 @@
 ﻿var express = require('express');
 var path = require('path');
+var fs = require('fs');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var db = require("./config/index");
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var morgan = require('morgan');
+let FileStreamRotator = require('file-stream-rotator');
 var user = require('./routes/user');
 var comment = require('./routes/comment');
 var Comment = require('./schemas/comment')
@@ -16,12 +19,27 @@ app.all('*', (req, res, next) => {
     res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
     res.header("Access-Control-Allow-Credentials", true); //可以带cookies
     res.header("X-Powered-By", '3.2.1')
-    if (req.method == 'OPTIONS') {
+    if (req.method === 'OPTIONS') {
         res.send(200);
     } else {
         next();
     }
 });
+/*
+* 增加日志文件
+* */
+var logDirectory = path.join(__dirname, 'log');
+fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
+// 日志分割流
+let accessLogStream = FileStreamRotator.getStream({
+    date_format: 'YYYYMMDD',
+    filename: path.join(logDirectory, 'access-%DATE%.log'),
+    frequency: 'daily',
+    verbose: false
+});
+// setup the logger
+app.use(morgan('combined', {stream: accessLogStream}))
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.engine('.html',require('ejs').__express)
