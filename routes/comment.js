@@ -14,6 +14,7 @@ router.post('/list',function(req,res,next){
         res.send(list);
     });
 })
+//导出评论
 router.post('/export',function(req,res,next){
     Comment.find({isDelected:false}).exec(function(err,list){
         if(err){
@@ -23,6 +24,7 @@ router.post('/export',function(req,res,next){
         res.send(list);
     });
 })
+//清除评论
 router.post('/remove',function(req,res,next){
     Comment.remove({},function(err,doc){
         if(err){

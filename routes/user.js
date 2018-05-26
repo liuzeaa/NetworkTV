@@ -174,6 +174,7 @@ router.post('/create',function(req, res, next){
         }*/
     })
 })
+//编辑用户
 router.post('/edit/:id',function(req,res,next){
     console.log(req.params.id)
     var password = req.body.password;
@@ -192,6 +193,7 @@ router.post('/edit/:id',function(req,res,next){
         res.json('edit success!');
     })
 })
+//删除用户
 router.post("/delete/:id",function(req,res,next){
     User.update({_id:req.params.id},{
         isDelected:true

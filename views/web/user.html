@@ -227,9 +227,15 @@
     $(function(){
         var userId = Cookies.get('userId');
         var userid = userId.slice(3,userId.length-1);
+        /**
+         * 管理员修改密码
+         */
         $('#editPwd').click(function(){
             edit(userid);
         })
+        /**
+         * 退出
+         */
         $('#logout').click(function(){
             $.ajax({
                 url:'/user/logout',
@@ -247,7 +253,9 @@
             })
         })
         getList(1,10);
-
+        /**
+         * 清除评论
+         */
         $('#removeComment').click(function(){
             layer.confirm('您确定要清除评论吗？', {
                 btn: ['确定', '取消'],
@@ -264,6 +272,9 @@
                 })
             },function () { })
         })
+        /**
+         * 导出评论
+         */
         $('#exportComment').click(function(){
             $.ajax({
                 url:'/comment/export',
@@ -277,6 +288,9 @@
                 }
             })
         })
+        /**
+         * 新增用户
+         */
         $('#create_form').bootstrapValidator({
             fields:{
                 nickName:{
@@ -318,7 +332,9 @@
                 }
             })
         });
-
+        /**
+         * checkbox全选
+         */
     $('.checkAll').click(function(){
         if($(this).is(':checked')){
             $('.checkSingle').prop('checked',true);
@@ -330,7 +346,9 @@
             deleteAry = []
         }
     })
-
+        /**
+         * 批量删除
+         */
     $('#AllDelete').click(function(){
         if($('.table input[type=checkbox]:checked').length==0){
             layer.msg('请勾选你要删除的用户')
@@ -346,6 +364,12 @@
         },function () { })
     })
     })
+
+    /**
+     * 获取用户列表
+     * @param pageIndex
+     * @param pageSize 分页数量
+     */
     function getList(pageIndex,pageSize){
         $.ajax({
             url:'/user/list',
@@ -363,6 +387,7 @@
             success:function(result){
                 $("#list").empty();
                 $("#item").tmpl(result.data).appendTo("#list");
+                //分页
                 laypage({
                     cont: 'page', //容器。值支持id名、原生dom对象，jquery对象。【如该容器为】：<div id="page1"></div>
                     pages: Math.ceil(result.totalCount / pageSize), //通过后台拿到的总页数
@@ -375,6 +400,7 @@
                         }
                     }
                 });
+                //checkbox单选
                 $('.checkSingle').click(function(){
                     if($(this).is(':checked')){
                         deleteAry.push($(this).val())
@@ -385,6 +411,11 @@
             }
         })
     }
+
+    /**
+     * 编辑用户
+     * @param id 用户id
+     */
     function edit(id){
         $('#editModal').modal('show');
         $('#edit_form').bootstrapValidator({
@@ -420,6 +451,11 @@
             })
         });
     }
+
+    /**
+     * 删除用户
+     * @param id 用户id
+     */
     function remove(id){
         layer.confirm('您确定要删除该用户吗？', {
             btn: ['确定', '取消'],
@@ -428,6 +464,12 @@
             deleteUser(id,index)
         },function () { })
     }
+
+    /**
+     * 删除用户api
+     * @param id 用户id
+     * @param index confirm框index
+     */
     function deleteUser(id,index){
         $.ajax({
             url:'/user/delete/'+id,
