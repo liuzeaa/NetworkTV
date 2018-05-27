@@ -385,12 +385,13 @@
                 name:$('#searchName1').val().trim()
             },
             success:function(result){
+                console.log(result)
                 $("#list").empty();
-                $("#item").tmpl(result.data).appendTo("#list");
+                $("#item").tmpl(result.rows).appendTo("#list");
                 //分页
                 laypage({
                     cont: 'page', //容器。值支持id名、原生dom对象，jquery对象。【如该容器为】：<div id="page1"></div>
-                    pages: Math.ceil(result.totalCount / pageSize), //通过后台拿到的总页数
+                    pages: Math.ceil(result.count / pageSize), //通过后台拿到的总页数
                     curr: pageIndex || 1, //当前页
                     skip: true, //是否开启跳页
                     skin: '#007cdb',

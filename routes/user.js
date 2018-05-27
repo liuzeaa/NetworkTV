@@ -1,7 +1,7 @@
 ﻿var express = require('express');
 var pinyin = require('pinyin');
 var router = express.Router();
-var User = require('../schemas/user');
+var Users = require('../schemas/model').Users
 var crypto = require('crypto');
 var fs = require('fs');
 let ejsExcel=require('ejsexcel');
@@ -15,14 +15,14 @@ router.post('/login',function(req,res,next){
     var userPwd = req.body.password;
     var md5 = crypto.createHash("md5");
     var newPas = md5.update(userPwd).digest("hex");
-
-    User.findOne({name:userName,isDelected:false},function(err,doc) {
-        if (err) {
-            res.send(err.message);
-            return
+    Users.findOne({
+        where:{
+            name:userName,
+            isDelete:0
         }
-        if (doc != null){
-            if(doc.password==newPas){
+    }).then(doc=>{
+        if(doc!=null){
+            if(doc.password===newPas){
                 res.cookie('isAdmin', doc.isAdmin, {
                     path: '/',
                     maxAge: 1000 * 60 * 60*24*7
@@ -57,6 +57,8 @@ router.post('/login',function(req,res,next){
                 msg:'该用户不存在'
             })
         }
+    }).catch(err=>{
+         res.send(err.message);
     })
 })
 //退出
@@ -109,22 +111,23 @@ router.post('/list', function(req, res, next) {
     let pageIndex = parseInt(req.body.pageIndex);
     let pageSize = parseInt(req.body.pageSize);
     let skip = (pageIndex-1)*pageSize;
-    let UserModel = User.find({isDelected:false,isAdmin:false,nickName:new RegExp(req.body.nickName),name:new RegExp(req.body.name)});
-    UserModel.exec(function (err, list) {
-        if(err){
-            res.send(err.message);
-            return;
-        }
-        UserModel.skip(skip).limit(pageSize).exec(function (err, list2) {
-            if(err){
-                res.send(err.message);
-                return;
+    Users.findAndCountAll({
+        where:{
+            isDelete:0,
+            isAdmin:0,
+            nickName:{
+                $like:'%'+req.body.nickName+'%'
+            },
+            name:{
+                $like:'%'+req.body.name+'%'
             }
-            res.json({
-                totalCount:list.length,
-                data:list2
-            })
-        })
+        },
+        limit:pageSize,
+        offset:skip
+    }).then(list=>{
+        res.send(list)
+    }).catch(err=>{
+        res.send(err)
     })
 });
 //新增用户
@@ -133,76 +136,55 @@ router.post('/create',function(req, res, next){
     var md5 = crypto.createHash("md5");
     var newPas = md5.update(req.body.password).digest("hex");
     var name = pinyin(req.body.nickName,{style:pinyin.STYLE_NORMAL}).join(',').replace(/\,/g,'');
-    User.find({
-        name:new RegExp('^'+name),
-         isDelected:false
-    },function(err,doc){
-        if(err){
-            res.send(err.message);
-            return;
+    Users.findAll({
+        where:{
+            name:{
+                $like:name+'%'
+            },
+            isDelete:0
         }
-        User.create({
+    }).then(doc=>{
+        Users.create({
             nickName:nickName,
             name:name+doc.length,
             password:newPas
-        },function(err,doc2){
-            if(err){
-                res.send(err.message);
-                return;
-            }
-           res.send(doc2)
+        }).then(doc2=>{
+            res.send(doc2)
+        }).catch(err=>{
+            res.send(err)
         })
-        /*if(doc){
-            if(doc.isDelected){
-                User.update({_id:doc._id},{
-                    $set:{
-                        password:newPas,
-                        isDelected:false
-                    }
-                },function(err,doc){
-                    res.json('edit success!');
-                })
-            }else {
-                res.json({
-                    status:'1',
-                    msg:'用户已存在',
-                    result:''
-                });
-            }
-        }else{
-
-        }*/
+    }).catch(err=>{
+        res.send(err)
     })
 })
 //编辑用户
 router.post('/edit/:id',function(req,res,next){
-    console.log(req.params.id)
     var password = req.body.password;
     var md5 = crypto.createHash("md5");
     var newPas = md5.update(password).digest("hex");
-    User.update({_id:req.params.id},{
-        $set:{
-            password:newPas,
-            updatedAt:new Date()
+    Users.update({
+        password:newPas,
+        updatedAt:new Date()
+    },{
+        where:{
+            id:req.params.id
         }
-    },function(err,doc){
-        if(err){
-            res.send(err.message);
-            return;
-        }
+    }).then(doc=>{
         res.json('edit success!');
+    }).catch(err=>{
+        res.send(err)
     })
 })
 //删除用户
 router.post("/delete/:id",function(req,res,next){
-    User.update({_id:req.params.id},{
-        isDelected:true
-    },function(err,doc){
-        if(err){
-            res.send(err.message);
-            return;
+    Users.update({isDelete:1},{
+        where:{
+            id:req.params.id
         }
+    }).then(doc=>{
         res.json("delete success!");
+    }).catch(err=>{
+        res.send(err)
     })
 })
 //导入用户
@@ -227,31 +209,28 @@ router.post('/import', upload.single('uploadfile'),function(req,res,next){
             var newPas = md5.update(item[1]).digest("hex");
             nickAry.push({nickName:item[0],name:name,password:newPas});
         })
-
-        User.find({isDelected:false,isAdmin:false},function(err,list){
-            if(err){
-                res.send(err.message);
-                return;
+        Users.findAll({
+            where:{
+                isDelecte:0,
+                isAdmin:0
             }
+        }).then(list=>{
             var intersection = array_intersection(list,nickAry);
-
             for(var i = 0;i<intersection.length;i++){
-                User.remove({
-                    nickName:intersection[i].nickName
-                },function(err,doc){
-
-                        console.log(doc)
+                Users.destroy({
+                    where:{
+                        nickName:intersection[i].nickName
+                    },
+                    limit:1
+                }).then(doc=>{
+                    console.log(doc)
                 })
             }
-            User.create(nickAry,function(err1,doc2){
-                if(err1){
-                    res.send(err1.message);
-                    return;
-                }
+            Users.bulkCreate(nickAry).then(doc=>{
+                console.log(doc)
                 res.redirect('/user')
             })
         })
-
     }).catch(error=>{
         console.log(error);
     });

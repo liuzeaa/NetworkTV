@@ -4,15 +4,14 @@ var fs = require('fs');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-var db = require("./config/index");
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 let FileStreamRotator = require('file-stream-rotator');
 var user = require('./routes/user');
 var comment = require('./routes/comment');
-var Comment = require('./schemas/comment')
-var User = require('./schemas/user');
+var Comments = require('./schemas/model').Comments
+
 app.all('*', (req, res, next) => {
     res.header("Access-Control-Allow-Origin", req.headers.origin || '*');
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
@@ -103,16 +102,14 @@ io.on('connection', function(socket) {
     // 监听用户发布聊天内容
     socket.on('message', function(obj) {
         //obj userId content
-        Comment.create(obj,function(err,data){
-            if(err){
-                console.log(err);
-                return;
-            }
+        Comments.create(obj).then(res=>{
             io.emit('message', {
                 nickName:obj.nickName,
                 content:obj.content,
                 createdAt:new Date()
             });
+        }).catch(err=>{
+             console.log(err);
         })
     });
 })

@@ -1,37 +1,43 @@
 ﻿var express = require('express');
 var router = express.Router();
-var Comment = require('../schemas/comment');
-var User = require('../schemas/user');
+var Comments = require('../schemas/model').Comments
 
 //获取评论列表
 router.post('/list',function(req,res,next){
     var date = new Date(new Date().setHours(0, 0, 0, 0));
-    Comment.find({isDelected:false,createdAt:{$gte:date}}).exec(function(err,list){
-        if(err){
-            res.send(err.message);
-            return;
+    Comments.findAll({
+        where:{
+            isDelete:0,
+            createdAt:{
+                $gte:date
+            }
         }
+    }).then(list=>{
         res.send(list);
-    });
+    }).catch(err=>{
+         res.send(err.message);
+    })
 })
 //导出评论
 router.post('/export',function(req,res,next){
-    Comment.find({isDelected:false}).exec(function(err,list){
-        if(err){
-            res.send(err.message);
-            return;
+    Comments.findAll({
+        where:{
+            isDelete:0
         }
-        res.send(list);
-    });
+    }).then(list=>{
+         res.send(list);
+    }).catch(err=>{
+         res.send(err.message);
+    })
 })
 //清除评论
 router.post('/remove',function(req,res,next){
-    Comment.remove({},function(err,doc){
-        if(err){
-            res.send(err.message);
-            return;
-        }
+    Comments.destroy({
+        truncate:true
+    }).then(list=>{
         res.json("delete success!");
+    }).catch(err=>{
+         res.send(err.message);
     })
 })
 module.exports = router;
