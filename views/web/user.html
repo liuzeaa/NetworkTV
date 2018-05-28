@@ -45,24 +45,22 @@
                         <div class="panel-body">
                             <div class="clearfix">
                                 <div class="input-group pull-left">
-                                    <input type="text" class="form-control" placeholder="请输入姓名搜索" id="searchName" style="width:215px">
+                                    <input type="text" class="form-control" placeholder="请输入姓名或者用户名" id="searchName" style="width:250px;padding-left:6px;">
                                     <button class="btn btn-info" type="button"  onclick="getList(1,10)">
                                         搜索
                                     </button>
                                 </div>
-                                <div class="input-group pull-left" style="margin-left: 15px;">
+                               <!-- <div class="input-group pull-left" style="margin-left: 15px;">
                                     <input type="text" class="form-control" placeholder="请输入用户名搜索" id="searchName1" style="width:215px">
                                     <button class="btn btn-info" type="button"  onclick="getList(1,10)">
                                         搜索
                                     </button>
-                                </div>
+                                </div>-->
                                 <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#createModal">增加用户</button>
                                 <button class="btn btn-primary pull-right" data-toggle="modal" style="margin-right:10px;" data-target="#importModal">导入用户</button>
                                 <button class="btn btn-danger pull-right" style="margin-right:10px;" id="removeComment">清除评论</button>
                                 <button class="btn btn-primary pull-right" style="margin-right:10px;" id="exportComment">导出评论</button>
-                            </div>
-                            <div class="clearfix" style="margin-top: 10px;">
-                                <button class="btn btn-danger"  id="AllDelete">批量删除</button>
+                                <button class="btn btn-danger pull-right" style="margin-right:10px;"  id="AllDelete">批量删除用户</button>
                             </div>
                             <table class="table-hover table-bordered table" style="margin-top: 15px">
                                 <thead>
@@ -381,12 +379,15 @@
             data:{
                 pageIndex:pageIndex,
                 pageSize:pageSize,
-                nickName:$('#searchName').val().trim(),
-                name:$('#searchName1').val().trim()
+                key:$('#searchName').val().trim(),
+                /*name:$('#searchName1').val().trim()*/
             },
             success:function(result){
-                console.log(result)
                 $("#list").empty();
+                if(result.rows.length==0){
+                    $("#list").html('<tr><td colspan="100" align="center">无数据</td></tr>');
+                    return
+                }
                 $("#item").tmpl(result.rows).appendTo("#list");
                 //分页
                 laypage({

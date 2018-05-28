@@ -115,12 +115,15 @@ router.post('/list', function(req, res, next) {
         where:{
             isDelete:0,
             isAdmin:0,
-            nickName:{
-                $like:'%'+req.body.nickName+'%'
-            },
-            name:{
-                $like:'%'+req.body.name+'%'
+            $or:{
+                name:{
+                    $like:'%'+req.body.key+'%'
+                },
+                nickName:{
+                    $like:'%'+req.body.key+'%'
+                }
             }
+
         },
         limit:pageSize,
         offset:skip
