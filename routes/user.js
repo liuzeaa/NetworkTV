@@ -220,8 +220,7 @@ router.post('/import', upload.single('uploadfile'),function(req,res,next){
                 Users.destroy({
                     where:{
                         nickName:intersection[i].nickName
-                    },
-                    limit:1
+                    }
                 }).then(doc=>{
                     console.log(doc)
                 })

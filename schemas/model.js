@@ -1,5 +1,7 @@
 const Sequelize = require('sequelize');
 var crypto = require('crypto');
+var md5 = crypto.createHash("md5");
+var newPas = md5.update('123qwe').digest("hex");
 const sequelize = new Sequelize('networktv', 'root', 'liuze828', {
   host: 'localhost',
   dialect: 'mysql',
@@ -50,9 +52,10 @@ const Comments = sequelize.define('comments',{
         defaultValue:0
     }
 })
-var md5 = crypto.createHash("md5");
-var newPas = md5.update('123qwe').digest("hex");
-Users.findOrCreate({
+
+
+sequelize.sync().then(()=>{
+    Users.findOrCreate({
     where:{
         name:'admin',isDelete:0,isAdmin:1
     },
@@ -64,7 +67,7 @@ Users.findOrCreate({
 }).catch(err=>{
     console.log("Error:" + err);
 })
-/*sequelize.sync();*/
+})
 module.exports={
     Users,
     Comments,
