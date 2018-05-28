@@ -147,18 +147,10 @@ router.post('/create',function(req, res, next){
             isDelete:0
         }
     }).then(doc=>{
-        if(doc.length==0){
-            obj={
-                 nickName:nickName,
-                name:name,
-                password:newPas
-            }
-        }else{
-            obj={
-                 nickName:nickName,
-                name:name+doc.length,
-                password:newPas
-            }
+        obj={
+            nickName:nickName,
+            name:doc.length==0?name:name+doc.length,
+            password:newPas
         }
         Users.create(obj).then(doc2=>{
             res.send(doc2)
