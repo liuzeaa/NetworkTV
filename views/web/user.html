@@ -206,12 +206,12 @@
 
 <script id="item" type="text/x-jquery-tmpl">
     <tr>
-        <td style="width:30px;vertical-align: middle"><input type="checkbox"  class="checkSingle" value="${_id}"></td>
+        <td style="width:30px;vertical-align: middle"><input type="checkbox"  class="checkSingle" value="${id}"></td>
         <td>${nickName}</td>
         <td>${name}</td>
         <td>
-            <button type="button" class="btn-primary btn" onclick="edit('${_id}')">修改密码</button>
-            <button type="button" class="btn btn-danger" onclick="remove('${_id}')">删除</button>
+            <button type="button" class="btn-primary btn" onclick="edit('${id}')">修改密码</button>
+            <button type="button" class="btn btn-danger" onclick="remove('${id}')">删除</button>
         </td>
     </tr>
 </script>

@@ -211,7 +211,7 @@ router.post('/import', upload.single('uploadfile'),function(req,res,next){
         })
         Users.findAll({
             where:{
-                isDelecte:0,
+                isDelete:0,
                 isAdmin:0
             }
         }).then(list=>{
