@@ -115,12 +115,15 @@ router.post('/list', function(req, res, next) {
         where:{
             isDelete:0,
             isAdmin:0,
-            nickName:{
-                $like:'%'+req.body.nickName+'%'
-            },
-            name:{
-                $like:'%'+req.body.name+'%'
+            $or:{
+                name:{
+                    $like:'%'+req.body.key+'%'
+                },
+                nickName:{
+                    $like:'%'+req.body.key+'%'
+                }
             }
+
         },
         limit:pageSize,
         offset:skip
@@ -144,11 +147,12 @@ router.post('/create',function(req, res, next){
             isDelete:0
         }
     }).then(doc=>{
-        Users.create({
+        obj={
             nickName:nickName,
-            name:name+doc.length,
+            name:doc.length==0?name:name+doc.length,
             password:newPas
-        }).then(doc2=>{
+        }
+        Users.create(obj).then(doc2=>{
             res.send(doc2)
         }).catch(err=>{
             res.send(err)
@@ -211,7 +215,7 @@ router.post('/import', upload.single('uploadfile'),function(req,res,next){
         })
         Users.findAll({
             where:{
-                isDelecte:0,
+                isDelete:0,
                 isAdmin:0
             }
         }).then(list=>{
@@ -220,8 +224,7 @@ router.post('/import', upload.single('uploadfile'),function(req,res,next){
                 Users.destroy({
                     where:{
                         nickName:intersection[i].nickName
-                    },
-                    limit:1
+                    }
                 }).then(doc=>{
                     console.log(doc)
                 })

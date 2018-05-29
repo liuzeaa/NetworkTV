@@ -95,7 +95,6 @@
                     password:$('#password').val().trim()
                 },
                 success:function(result){
-                    debugger;
                     if(result.status==1){
                         alert(result.msg);
                         return
@@ -109,7 +108,7 @@
                             Cookies.set('name',$('#name').val().trim(), { expires: 7 });
                             Cookies.set('password', $('#password').val().trim(), { expires: 7 });
                         }
-                        if(result.isAdmin){
+                        if(result.isAdmin==1){
                             location.href='/user'
                         }else{
                             location.href='/video'
