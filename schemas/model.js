@@ -30,12 +30,12 @@ const Users = sequelize.define('users',{
     name:Sequelize.STRING,
     password:Sequelize.STRING,
     isAdmin:{
-        type:Sequelize.INTEGER,
-        defaultValue:0
+        type:Sequelize.BOOLEAN,
+        defaultValue:false
     },
     isDelete:{
-        type:Sequelize.INTEGER,
-        defaultValue:0
+        type:Sequelize.BOOLEAN,
+        defaultValue:false
     }
 })
 
@@ -46,10 +46,10 @@ const Comments = sequelize.define('comments',{
         autoIncrement: true,
     },
     nickName:Sequelize.STRING,
-    content:Sequelize.STRING,
+    content:Sequelize.TEXT,
     isDelete:{
-        type:Sequelize.INTEGER,
-        defaultValue:0
+        type:Sequelize.BOOLEAN,
+        defaultValue:false
     }
 })
 
@@ -57,10 +57,10 @@ const Comments = sequelize.define('comments',{
 sequelize.sync().then(()=>{
     Users.findOrCreate({
     where:{
-        name:'admin',isDelete:0,isAdmin:1
+        name:'admin',isDelete:false,isAdmin:true
     },
     defaults:{
-        nickName:"超级管理员",name: 'admin',password:newPas,isAdmin:1
+        nickName:"超级管理员",name: 'admin',password:newPas,isAdmin:true
     }
 }).then(res=>{
     console.log("Res:" + res);

@@ -91,7 +91,7 @@
                             Cookies.set('password', $('#password').val().trim(), { expires: 7 });
                         }
 
-                        if(result.isAdmin==1){
+                        if(result.isAdmin){
                             alert('管理员请使用pc端进行添加用户！');
                             return
                         }else{

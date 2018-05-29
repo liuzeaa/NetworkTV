@@ -7,7 +7,7 @@ router.post('/list',function(req,res,next){
     var date = new Date(new Date().setHours(0, 0, 0, 0));
     Comments.findAll({
         where:{
-            isDelete:0,
+            isDelete:false,
             createdAt:{
                 $gte:date
             }
@@ -22,7 +22,7 @@ router.post('/list',function(req,res,next){
 router.post('/export',function(req,res,next){
     Comments.findAll({
         where:{
-            isDelete:0
+            isDelete:false
         }
     }).then(list=>{
          res.send(list);
@@ -32,9 +32,9 @@ router.post('/export',function(req,res,next){
 })
 //清除评论
 router.post('/remove',function(req,res,next){
-    Comments.update({isDelete:1},{
+    Comments.update({isDelete:true},{
         where:{
-            isDelete:0,
+            isDelete:false,
             createdAt:{
                 $lte:new Date()
             }

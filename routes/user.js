@@ -18,7 +18,7 @@ router.post('/login',function(req,res,next){
     Users.findOne({
         where:{
             name:userName,
-            isDelete:0
+            isDelete:false
         }
     }).then(doc=>{
         if(doc!=null){
@@ -113,8 +113,8 @@ router.post('/list', function(req, res, next) {
     let skip = (pageIndex-1)*pageSize;
     Users.findAndCountAll({
         where:{
-            isDelete:0,
-            isAdmin:0,
+            isDelete:false,
+            isAdmin:false,
             $or:{
                 name:{
                     $like:'%'+req.body.key+'%'
@@ -144,7 +144,7 @@ router.post('/create',function(req, res, next){
             name:{
                 $like:name+'%'
             },
-            isDelete:0
+            isDelete:false
         }
     }).then(doc=>{
         obj={
@@ -181,7 +181,7 @@ router.post('/edit/:id',function(req,res,next){
 })
 //删除用户
 router.post("/delete/:id",function(req,res,next){
-    Users.update({isDelete:1},{
+    Users.update({isDelete:true},{
         where:{
             id:req.params.id
         }
@@ -215,8 +215,8 @@ router.post('/import', upload.single('uploadfile'),function(req,res,next){
         })
         Users.findAll({
             where:{
-                isDelete:0,
-                isAdmin:0
+                isDelete:false,
+                isAdmin:false
             }
         }).then(list=>{
             var intersection = array_intersection(list,nickAry);

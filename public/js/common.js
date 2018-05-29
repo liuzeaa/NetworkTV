@@ -21,7 +21,7 @@ function checkLogin(){
                 }
                 location.href='/'
             }else{
-                if(result.result.isAdmin==1){
+                if(result.result.isAdmin=='true'){
                     if(location.href=='http://'+location.hostname+'/user'){
                         return;
                     }

@@ -21,7 +21,7 @@ function checkLogin(){
                 }
                 location.href='/'
             }else{
-                if(result.result.isAdmin==1){
+                if(result.result.isAdmin=='true'){
                     alert('管理员请使用pc端进行添加用户！');
                     return;
                 }else{

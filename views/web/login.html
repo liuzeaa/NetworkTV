@@ -108,7 +108,7 @@
                             Cookies.set('name',$('#name').val().trim(), { expires: 7 });
                             Cookies.set('password', $('#password').val().trim(), { expires: 7 });
                         }
-                        if(result.isAdmin==1){
+                        if(result.isAdmin){
                             location.href='/user'
                         }else{
                             location.href='/video'
