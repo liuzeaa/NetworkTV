@@ -32,10 +32,15 @@ router.post('/export',function(req,res,next){
 })
 //清除评论
 router.post('/remove',function(req,res,next){
-    Comments.destroy({
-        truncate:true
+    Comments.update({isDelete:1},{
+        where:{
+            isDelete:0,
+            createdAt:{
+                $lte:new Date()
+            }
+        }
     }).then(list=>{
-        res.json("delete success!");
+        res.send(list)
     }).catch(err=>{
          res.send(err.message);
     })
