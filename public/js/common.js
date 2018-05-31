@@ -15,7 +15,6 @@ function checkLogin(){
         },
         data:{},
         success:function(result){
-            debugger;
             if(result.status=='2'){
                 if(location.href=='http://'+location.host+'/'){
                     return;
