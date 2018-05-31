@@ -15,19 +15,20 @@ function checkLogin(){
         },
         data:{},
         success:function(result){
+            debugger;
             if(result.status=='2'){
-                if(location.href=='http://'+location.hostname+'/'){
+                if(location.href=='http://'+location.host+'/'){
                     return;
                 }
                 location.href='/'
             }else{
                 if(result.result.isAdmin=='true'){
-                    if(location.href=='http://'+location.hostname+'/user'){
+                    if(location.href=='http://'+location.host+'/user'){
                         return;
                     }
                     location.href='/user'
                 }else{
-                    if(location.href=='http://'+location.hostname+'/video'){
+                    if(location.href=='http://'+location.host+'/video'){
                         return;
                     }
                     location.href='/video'
