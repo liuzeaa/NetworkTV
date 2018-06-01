@@ -1,0 +1,12 @@
+INSERT INTO networktv.comments (id, nickName, content, isDelete, createdAt, updatedAt) VALUES (1, '宋玉玲', 'ggdgshdh', 0, '2018-06-01 14:50:21', '2018-06-01 14:50:21');
+INSERT INTO networktv.comments (id, nickName, content, isDelete, createdAt, updatedAt) VALUES (6, '王佳', 'mmm', 0, '2018-06-01 14:50:21', '2018-06-01 14:50:21');
+INSERT INTO networktv.comments (id, nickName, content, isDelete, createdAt, updatedAt) VALUES (7, '王佳', 'huhihihiioioiiio', 0, '2018-06-01 14:50:21', '2018-06-01 14:50:21');
+INSERT INTO networktv.comments (id, nickName, content, isDelete, createdAt, updatedAt) VALUES (8, '王佳', 'jhjhhjhjh', 0, '2018-06-01 14:50:21', '2018-06-01 14:50:21');
+INSERT INTO networktv.comments (id, nickName, content, isDelete, createdAt, updatedAt) VALUES (9, '王佳', '纯纯粹粹常常', 0, '2018-06-01 14:50:21', '2018-06-01 14:50:21');
+INSERT INTO networktv.comments (id, nickName, content, isDelete, createdAt, updatedAt) VALUES (10, '宋玉玲', 'jkhjh', 0, '2018-06-01 14:50:21', '2018-06-01 14:50:21');
+INSERT INTO networktv.comments (id, nickName, content, isDelete, createdAt, updatedAt) VALUES (11, 'yd', 'aa', 0, '2018-06-01 14:50:21', '2018-06-01 14:50:21');
+INSERT INTO networktv.comments (id, nickName, content, isDelete, createdAt, updatedAt) VALUES (12, '家长', 'dfsa', 0, '2018-06-01 14:50:21', '2018-06-01 14:50:21');
+INSERT INTO networktv.comments (id, nickName, content, isDelete, createdAt, updatedAt) VALUES (13, '家长', 'adfasdf', 0, '2018-06-01 14:50:21', '2018-06-01 14:50:21');
+INSERT INTO networktv.comments (id, nickName, content, isDelete, createdAt, updatedAt) VALUES (14, '王佳', '非常棒', 0, '2018-06-01 14:50:21', '2018-06-01 14:50:21');
+INSERT INTO networktv.comments (id, nickName, content, isDelete, createdAt, updatedAt) VALUES (15, '宋玉玲', 'jhkjh', 0, '2018-06-01 14:50:21', '2018-06-01 14:50:21');
+INSERT INTO networktv.comments (id, nickName, content, isDelete, createdAt, updatedAt) VALUES (16, '宋玉玲', 'usbdb', 0, '2018-06-01 14:50:21', '2018-06-01 14:50:21');
