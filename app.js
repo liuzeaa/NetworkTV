@@ -80,7 +80,7 @@ app.get('/user', function(req, res, next) {
 
 app.use('/user', user);
 app.use('/comment', comment);
-server.listen(80);
+server.listen(3000);
 // 在线用户
 var onlineUsers = {};
 // 当前在线人数

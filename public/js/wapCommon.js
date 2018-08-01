@@ -16,7 +16,7 @@ function checkLogin(){
         data:{},
         success:function(result){
             if(result.status=='2'){
-                if(location.href=='http://'+location.hostname+'/'){
+                if(location.href==location.protocol+'//'+location.hostname+'/'){
                     return;
                 }
                 location.href='/'
@@ -25,7 +25,7 @@ function checkLogin(){
                     alert('管理员请使用pc端进行添加用户！');
                     return;
                 }else{
-                    if(location.href=='http://'+location.hostname+'/video'){
+                    if(location.href==location.protocol+'//'+location.hostname+'/video'){
                         return;
                     }
                     location.href='/video'

@@ -16,18 +16,18 @@ function checkLogin(){
         data:{},
         success:function(result){
             if(result.status=='2'){
-                if(location.href=='http://'+location.hostname+'/'){
+                if(location.href==location.protocol+'//'+location.host+'/'){
                     return;
                 }
                 location.href='/'
             }else{
                 if(result.result.isAdmin=='true'){
-                    if(location.href=='http://'+location.hostname+'/user'){
+                    if(location.href==location.protocol+'//'+location.host+'/user'){
                         return;
                     }
                     location.href='/user'
                 }else{
-                    if(location.href=='http://'+location.hostname+'/video'){
+                    if(location.href==location.protocol+'//'+location.host+'/video'){
                         return;
                     }
                     location.href='/video'

@@ -143,7 +143,7 @@ router.post('/create',function(req, res, next){
         }
         User.create({
             nickName:nickName,
-            name:name+doc.length,
+            name:doc.length==0?name:name+doc.length,
             password:newPas
         },function(err,doc2){
             if(err){
