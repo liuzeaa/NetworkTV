@@ -27,7 +27,7 @@ router.post('/login',function(req,res,next){
                     path: '/',
                     maxAge: 1000 * 60 * 60*24*7
                 })
-                res.cookie('userId', doc._id, {
+                res.cookie('userId', doc.id, {
                     path: '/',
                     maxAge: 1000 * 60 * 60*24*7
                 })
@@ -41,7 +41,7 @@ router.post('/login',function(req,res,next){
                 });
                 res.send({
                     isAdmin: doc.isAdmin,
-                    userId: doc._id,
+                    userId: doc.id,
                     userName: doc.name,
                     nickName: doc.nickName
                 });
