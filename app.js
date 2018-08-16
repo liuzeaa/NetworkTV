@@ -12,6 +12,9 @@ var user = require('./routes/user');
 var comment = require('./routes/comment');
 var Comments = require('./schemas/model').Comments
 
+const compression = require('compression');
+app.use(compression());
+
 app.all('*', (req, res, next) => {
     res.header("Access-Control-Allow-Origin", req.headers.origin || '*');
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
