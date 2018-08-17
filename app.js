@@ -50,7 +50,7 @@ app.set('view engine', 'html');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'),{maxAge:1000*60*60}));
 
 app.get('/', function(req, res, next) {
     isMobile(req,function(){

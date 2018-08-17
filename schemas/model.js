@@ -2,8 +2,8 @@ const Sequelize = require('sequelize');
 var crypto = require('crypto');
 var md5 = crypto.createHash("md5");
 var newPas = md5.update('123qwe').digest("hex");
-const sequelize = new Sequelize('networktv', 'root', 'liuze828', {
-  host: 'localhost',
+const sequelize = new Sequelize('networktv', 'root', 'liuze@828', {
+  host: '192.168.1.29',
   dialect: 'mysql',
   pool: {
     max: 5,
