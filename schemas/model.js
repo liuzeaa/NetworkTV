@@ -5,12 +5,15 @@ var newPas = md5.update('123qwe').digest("hex");
 const sequelize = new Sequelize('networktv', 'root', 'liuze@828', {
   host: '192.168.1.29',
   dialect: 'mysql',
+  dialectOptions: {
+    charset:'utf8'
+  },
   pool: {
     max: 5,
     min: 0,
     idle: 10000
   },
-  timezone: '+08:00' //东八时区
+  timezone: '+08:00', //东八时区
 });
 sequelize
   .authenticate()
